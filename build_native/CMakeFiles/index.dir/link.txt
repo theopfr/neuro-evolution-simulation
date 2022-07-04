@@ -1,0 +1,1 @@
+g++ CMakeFiles/index.dir/src/main.cpp.o CMakeFiles/index.dir/src/app.cpp.o -o index  lib/piksel/libpiksel.a lib/piksel/libglad.a lib/piksel/lib/glfw/src/libglfw3.a /usr/lib/x86_64-linux-gnu/librt.a -lm -ldl /usr/lib/x86_64-linux-gnu/libX11.so lib/piksel/libmsdfgen.a lib/piksel/libcpp-base64.a lib/piksel/libjson11.a 

@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+11861d5d5398dc4a029b502601ad8794 lib/piksel/CMakeFiles/copy_data_directory
+ae05b381e6b0f18e90feb824b4cd0d46 lib/piksel/CMakeFiles/make_data_directory
+e8d639b52778d44b7469c4d27e5b5fe0 lib/piksel/CMakeFiles/touch_dummy
+b3056483e4f627f02bd9b4a4b9c6483b lib/piksel/lib/glfw/CMakeFiles/uninstall
