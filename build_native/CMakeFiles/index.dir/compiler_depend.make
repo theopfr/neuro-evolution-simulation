@@ -3,26 +3,6 @@
 
 CMakeFiles/index.dir/src/app.cpp.o: ../src/app.cpp \
   /usr/include/stdc-predef.h \
-  /usr/include/unistd.h \
-  /usr/include/features.h \
-  /usr/include/features-time64.h \
-  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
-  /usr/include/x86_64-linux-gnu/bits/timesize.h \
-  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
-  /usr/include/x86_64-linux-gnu/bits/long-double.h \
-  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
-  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
-  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
-  /usr/include/x86_64-linux-gnu/bits/environments.h \
-  /usr/include/x86_64-linux-gnu/bits/types.h \
-  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
-  /usr/include/x86_64-linux-gnu/bits/time64.h \
-  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
-  /usr/include/x86_64-linux-gnu/bits/confname.h \
-  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
-  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
-  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
-  /usr/include/linux/close_range.h \
   ../src/app.hpp \
   ../lib/piksel/src/piksel/baseapp.hpp \
   ../lib/piksel/src/piksel/graphics.hpp \
@@ -31,10 +11,22 @@ CMakeFiles/index.dir/src/app.cpp.o: ../src/app.cpp \
   ../lib/piksel/src/piksel/shape.hpp \
   ../lib/piksel/src/piksel/image.hpp \
   ../lib/piksel/lib/glad/include/glad/glad.h \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
   ../lib/piksel/lib/glad/include/KHR/khrplatform.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h \
   /usr/include/stdint.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/features.h \
+  /usr/include/features-time64.h \
+  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+  /usr/include/x86_64-linux-gnu/bits/timesize.h \
+  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+  /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+  /usr/include/x86_64-linux-gnu/bits/types.h \
+  /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+  /usr/include/x86_64-linux-gnu/bits/time64.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
@@ -451,7 +443,15 @@ CMakeFiles/index.dir/src/app.cpp.o: ../src/app.cpp \
   /usr/include/c++/11/numeric \
   /usr/include/c++/11/bits/stl_numeric.h \
   ../src/vector.cpp \
-  ../src/food.cpp
+  ../src/food.cpp \
+  /usr/include/unistd.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+  /usr/include/linux/close_range.h
 
 CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/stdc-predef.h \
@@ -895,10 +895,24 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/numeric \
   /usr/include/c++/11/bits/stl_numeric.h \
   ../src/vector.cpp \
-  ../src/food.cpp
+  ../src/food.cpp \
+  /usr/include/unistd.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+  /usr/include/linux/close_range.h
 
 
 ../src/main.cpp:
+
+/usr/include/linux/close_range.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 ../src/food.cpp:
 
@@ -1020,6 +1034,10 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/gfniintrin.h:
 
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/fmaintrin.h:
+
 /usr/lib/gcc/x86_64-linux-gnu/11/include/shaintrin.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vp2intersectvlintrin.h:
@@ -1122,29 +1140,23 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/glm/glm/detail/func_vector_relational.inl:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/rdseedintrin.h:
+/usr/include/c++/11/bits/stl_construct.h:
 
-../lib/piksel/lib/glm/glm/detail/func_vector_relational.hpp:
+../lib/piksel/lib/glm/glm/detail/func_matrix.hpp:
 
-../lib/piksel/lib/glm/glm/detail/func_exponential.inl:
+../lib/piksel/lib/msdfgen/msdfgen/core/SignedDistance.h:
 
-../lib/piksel/lib/glm/glm/detail/type_vec1.inl:
+/usr/lib/gcc/x86_64-linux-gnu/11/include/fxsrintrin.h:
 
-../lib/piksel/lib/glm/glm/detail/type_vec1.hpp:
+/usr/include/c++/11/bits/cxxabi_forced.h:
 
-../lib/piksel/lib/glm/glm/detail/func_exponential.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/popcntintrin.h:
-
-../lib/piksel/lib/glm/glm/detail/func_geometric.inl:
-
-../lib/piksel/lib/glm/glm/detail/func_geometric.hpp:
-
-../lib/piksel/lib/glm/glm/geometric.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+../lib/piksel/lib/msdfgen/msdfgen/core/EdgeHolder.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
+/usr/include/c++/11/bits/stl_iterator_base_types.h:
+
+/usr/include/assert.h:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
@@ -1182,11 +1194,9 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/backward/binders.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/fxsrintrin.h:
+/usr/include/c++/11/cstdlib:
 
-/usr/include/c++/11/bits/cxxabi_forced.h:
-
-../lib/piksel/lib/msdfgen/msdfgen/core/EdgeHolder.h:
+../lib/piksel/lib/glm/glm/detail/type_int.hpp:
 
 ../lib/piksel/lib/glm/glm/detail/func_common.hpp:
 
@@ -1203,6 +1213,8 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/ext/alloc_traits.h:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
@@ -1234,196 +1246,6 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
-/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/c++/11/bits/stl_iterator.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bwintrin.h:
-
-/usr/include/wchar.h:
-
-/usr/include/c++/11/cwchar:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h:
-
-/usr/include/c++/11/clocale:
-
-../lib/piksel/lib/glm/glm/mat2x4.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512ifmaintrin.h:
-
-../lib/piksel/src/piksel/shape.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-../lib/piksel/lib/glm/glm/simd/common.h:
-
-../src/app.cpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/xtestintrin.h:
-
-/usr/include/c++/11/cstdint:
-
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
-
-/usr/include/c++/11/climits:
-
-/usr/include/c++/11/new:
-
-../lib/piksel/lib/glm/glm/detail/type_float.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/fmaintrin.h:
-
-/usr/include/x86_64-linux-gnu/bits/confname.h:
-
-../lib/piksel/lib/glm/glm/matrix.hpp:
-
-../lib/piksel/lib/msdfgen/msdfgen/core/arithmetics.hpp:
-
-../lib/piksel/src/piksel/font.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512erintrin.h:
-
-../lib/piksel/lib/msdfgen/msdfgen/core/EdgeColor.h:
-
-/usr/include/c++/11/bits/predefined_ops.h:
-
-/usr/include/x86_64-linux-gnu/bits/typesizes.h:
-
-/usr/include/c++/11/bits/localefwd.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512cdintrin.h:
-
-../lib/piksel/lib/glm/glm/fwd.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-/usr/include/time.h:
-
-/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
-
-/usr/include/c++/11/bits/stl_algobase.h:
-
-/usr/include/unistd.h:
-
-../lib/piksel/src/piksel/constants.hpp:
-
-/usr/include/c++/11/bits/stl_pair.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/bmiintrin.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/c++/11/cfloat:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/linux/close_range.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
-
-/usr/include/c++/11/debug/assertions.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avxvnniintrin.h:
-
-/usr/include/c++/11/cctype:
-
-/usr/include/x86_64-linux-gnu/bits/wordsize.h:
-
-../lib/piksel/lib/glm/glm/detail/type_mat2x3.hpp:
-
-../lib/piksel/lib/glm/glm/detail/type_half.inl:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vnnivlintrin.h:
-
-/usr/include/c++/11/ext/type_traits.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/immintrin.h:
-
-../lib/piksel/lib/glm/glm/detail/type_mat3x3.inl:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h:
-
-/usr/include/c++/11/debug/debug.h:
-
-/usr/include/features-time64.h:
-
-/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
-
-../src/vector.cpp:
-
-/usr/include/c++/11/vector:
-
-/usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
-
-../lib/piksel/lib/glm/glm/detail/func_trigonometric_simd.inl:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/smmintrin.h:
-
-/usr/include/c++/11/iosfwd:
-
-/usr/include/c++/11/initializer_list:
-
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h:
-
-../lib/piksel/lib/glm/glm/mat3x4.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/vpclmulqdqintrin.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/x86_64-linux-gnu/sys/cdefs.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vldqintrin.h:
-
-../lib/piksel/lib/glm/glm/detail/type_mat3x2.inl:
-
-/usr/include/c++/11/cmath:
-
-/usr/include/c++/11/bits/allocator.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/mwaitxintrin.h:
-
-/usr/include/c++/11/type_traits:
-
-/usr/include/x86_64-linux-gnu/sys/single_threaded.h:
-
-../lib/piksel/lib/glm/glm/detail/type_mat3x3.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/amxint8intrin.h:
-
-../lib/piksel/lib/glm/glm/detail/type_mat.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
-
-/usr/include/c++/11/ext/numeric_traits.h:
-
-/usr/include/features.h:
-
-/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
-
-../lib/piksel/src/piksel/image.hpp:
-
-/usr/include/c++/11/bits/char_traits.h:
-
-../lib/piksel/lib/msdfgen/msdfgen/core/render-sdf.h:
-
-/usr/include/asm-generic/errno-base.h:
-
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
@@ -1438,7 +1260,93 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/glm/glm/mat4x3.hpp:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/popcntintrin.h:
+
+../lib/piksel/lib/glm/glm/detail/func_geometric.inl:
+
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avxvnniintrin.h:
+
+/usr/include/c++/11/cctype:
+
+/usr/include/c++/11/cfloat:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/bmiintrin.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
+
+../lib/piksel/src/piksel/font.hpp:
+
+/usr/include/c++/11/bits/stl_pair.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vldqintrin.h:
+
+../lib/piksel/lib/glm/glm/detail/type_mat3x2.inl:
+
+/usr/include/c++/11/cmath:
+
+/usr/include/c++/11/bits/allocator.h:
+
+../lib/piksel/lib/glm/glm/detail/type_mat3x3.hpp:
+
+../lib/piksel/lib/glm/glm/detail/func_trigonometric_simd.inl:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/smmintrin.h:
+
+/usr/include/c++/11/iosfwd:
+
+/usr/include/c++/11/initializer_list:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++locale.h:
+
+../lib/piksel/lib/glm/glm/mat3x4.hpp:
+
+/usr/include/unistd.h:
+
+/usr/include/c++/11/bits/stl_algobase.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h:
+
+/usr/include/c++/11/cwchar:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/vpclmulqdqintrin.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+../lib/piksel/lib/glm/glm/detail/type_mat2x3.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
+
+/usr/include/c++/11/debug/assertions.h:
+
+/usr/include/c++/11/bits/localefwd.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512cdintrin.h:
+
+../lib/piksel/lib/glm/glm/fwd.hpp:
+
+../lib/piksel/lib/glm/glm/simd/common.h:
+
+../src/app.cpp:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/movdirintrin.h:
 
@@ -1452,17 +1360,91 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/glm/glm/vec4.hpp:
 
+../lib/piksel/lib/glm/glm/matrix.hpp:
+
+../lib/piksel/lib/msdfgen/msdfgen/core/arithmetics.hpp:
+
 ../lib/piksel/lib/glm/glm/exponential.hpp:
 
 ../lib/piksel/src/piksel/drawmode.hpp:
 
-/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vlbwintrin.h:
+/usr/include/c++/11/bits/char_traits.h:
 
-/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
+../lib/piksel/lib/msdfgen/msdfgen/core/render-sdf.h:
 
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+/usr/include/asm-generic/errno-base.h:
 
-../lib/piksel/lib/glad/include/glad/glad.h:
+../lib/piksel/src/piksel/image.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/mwaitxintrin.h:
+
+/usr/include/x86_64-linux-gnu/sys/single_threaded.h:
+
+/usr/include/c++/11/type_traits:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512erintrin.h:
+
+../lib/piksel/lib/msdfgen/msdfgen/core/EdgeColor.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/c++/11/bits/alloc_traits.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/features.h:
+
+/usr/include/c++/11/ext/numeric_traits.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
+/usr/include/x86_64-linux-gnu/bits/setjmp.h:
+
+/usr/include/time.h:
+
+../lib/piksel/lib/glm/glm/mat2x4.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512ifmaintrin.h:
+
+../lib/piksel/src/piksel/shape.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/timesize.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/cpu_defines.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/rdseedintrin.h:
+
+../lib/piksel/lib/glm/glm/detail/func_vector_relational.hpp:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+
+/usr/include/linux/errno.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h:
+
+/usr/include/c++/11/debug/debug.h:
+
+/usr/include/features-time64.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+
+../lib/piksel/lib/glm/glm/geometric.hpp:
+
+/usr/include/c++/11/ext/string_conversions.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/amxint8intrin.h:
+
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
+
+../lib/piksel/lib/glm/glm/detail/type_mat.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/xtestintrin.h:
+
+/usr/include/c++/11/cstdint:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/prfchwintrin.h:
 
@@ -1484,7 +1466,13 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_iterator_base_funcs.h:
 
-/usr/include/inttypes.h:
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vlbwintrin.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/gthr-default.h:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+../lib/piksel/lib/glad/include/glad/glad.h:
 
 ../lib/piksel/lib/glfw/include/GLFW/glfw3.h:
 
@@ -1502,6 +1490,16 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/string:
 
+../lib/piksel/lib/glm/glm/detail/type_half.inl:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vnnivlintrin.h:
+
+/usr/include/c++/11/ext/type_traits.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/immintrin.h:
+
+../lib/piksel/lib/glm/glm/detail/type_mat3x3.inl:
+
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
 /usr/include/c++/11/bits/functexcept.h:
@@ -1514,14 +1512,6 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
-/usr/include/c++/11/bits/stl_iterator_base_types.h:
-
-../lib/piksel/lib/glm/glm/detail/type_int.hpp:
-
-/usr/include/c++/11/cstdlib:
-
-/usr/include/assert.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
 /usr/include/c++/11/bits/concept_check.h:
@@ -1530,23 +1520,25 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/glm/glm/detail/type_mat2x2.inl:
 
-/usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h:
+/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
+/usr/include/c++/11/bits/stl_iterator.h:
 
-/usr/include/linux/errno.h:
+/usr/include/c++/11/climits:
 
-/usr/include/stdc-predef.h:
+../lib/piksel/lib/glm/glm/detail/type_float.hpp:
 
-/usr/include/c++/11/bits/alloc_traits.h:
+/usr/include/c++/11/new:
 
-../lib/piksel/lib/msdfgen/msdfgen/core/SignedDistance.h:
+/usr/include/c++/11/clocale:
 
-/usr/include/c++/11/bits/stl_construct.h:
+/usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
-../lib/piksel/lib/glm/glm/detail/func_matrix.hpp:
+/usr/include/c++/11/bits/predefined_ops.h:
 
-/usr/include/c++/11/ext/string_conversions.h:
+/usr/lib/gcc/x86_64-linux-gnu/11/include/avx512bwintrin.h:
+
+/usr/include/wchar.h:
 
 /usr/include/stdlib.h:
 
@@ -1566,9 +1558,9 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx2intrin.h:
 
-/usr/include/c++/11/bits/ptr_traits.h:
-
 /usr/include/stdint.h:
+
+/usr/include/c++/11/bits/ptr_traits.h:
 
 /usr/include/endian.h:
 
@@ -1670,6 +1662,10 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/msdfgen/msdfgen/core/Shape.h:
 
+../src/vector.cpp:
+
+/usr/include/c++/11/vector:
+
 /usr/include/c++/11/bits/stl_uninitialized.h:
 
 /usr/include/c++/11/cstddef:
@@ -1707,6 +1703,8 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/11/include/avx512vbmi2vlintrin.h:
 
 ../lib/piksel/src/piksel/state.hpp:
+
+../lib/piksel/src/piksel/constants.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/mwaitintrin.h:
 
@@ -1760,6 +1758,8 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 
 ../lib/piksel/lib/glm/glm/vec3.hpp:
 
+../lib/piksel/lib/glm/glm/detail/type_vec1.inl:
+
 ../lib/piksel/lib/glm/glm/detail/type_vec3.inl:
 
 /usr/include/c++/11/ext/atomicity.h:
@@ -1799,3 +1799,11 @@ CMakeFiles/index.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 ../lib/piksel/lib/glm/glm/detail/func_matrix.inl:
+
+../lib/piksel/lib/glm/glm/detail/func_geometric.hpp:
+
+../lib/piksel/lib/glm/glm/detail/func_exponential.inl:
+
+../lib/piksel/lib/glm/glm/detail/func_exponential.hpp:
+
+../lib/piksel/lib/glm/glm/detail/type_vec1.hpp:

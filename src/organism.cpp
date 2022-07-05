@@ -11,8 +11,8 @@ public:
     Vector position;
     Vector direction;
 
-    int angle;
-    float wanderingStrength = 0.5;
+    int angle = randomInt(0, 360);
+    float wanderingStrength = 2;
     int speed = 2;
 
     bool alive = true;
@@ -54,7 +54,9 @@ public:
         currentLifeTime += 1;
 
         // calculate new step
-        angle = randomInt(0, 360);
+        //angle = randomInt(0, 360);
+        angle += randomInt(-20, 20);
+
         direction.x = (direction.x + sin(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
         direction.y = (direction.y + cos(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
 
@@ -66,7 +68,7 @@ public:
         position.y += direction.y;
 
         // check if organism hits the wall and optionally consume energy
-        if (position.x < 10 || position.x > 1090 || position.y < 10 || position.y > 890) {
+        if (position.x + direction.x < 20 || position.x + direction.x > 1070 || position.y + direction.y < 20 || position.y + direction.y > 880) {
             direction.x *= -1;
             direction.y *= -1;
             energy -= wallDamage;

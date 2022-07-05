@@ -1,7 +1,5 @@
-#include <unistd.h>
 #include "app.hpp"
 #include <iostream>
-
 #include <vector>
 
 
@@ -10,11 +8,29 @@ float distance(Vector a, Vector b) {
 }
 
 
+void App::keyPressed(int key) {
+    if (key == 262) {
+        if (animationDelay < 2000) {
+                animationDelay = 0;
+        }
+        else {
+            animationDelay -= 2000;
+        }
+    }
+    else if (key == 263) {
+        if (animationDelay > 50000 - 2000) {
+                animationDelay = 50000;
+        }
+        else {
+            animationDelay += 2000;
+        }
+    }
+}
+
+
 void App::setup() {
     spawnInitialGeneration(initialGenerationSize);
     spawnFood(initialFoodAmount);
-
-    iteration = 0;
 }
 
 
@@ -62,9 +78,7 @@ void App::draw(piksel::Graphics& g) {
         for (uint j=0; j<foods.size() - 1; j++) {
             if (distance(organisms.at(i).position, foods.at(j).position) < (organisms.at(i).currentSize / 2 + foods.at(j).size / 2)) {
                 foods.erase(foods.begin() + j);
-
                 organisms.at(i).energy += 0.2;
-
                 break;
             }
         }
@@ -79,5 +93,5 @@ void App::draw(piksel::Graphics& g) {
         spawnFood(randomInt(1, 3));
     }
 
-    usleep(50000);
+    handleanimationDelay(g);
 }
