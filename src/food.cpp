@@ -7,7 +7,10 @@
 class Food {
 public:
     Vector position;
-    uint size = 5;
+    uint size = 6;
+
+    // food type 0: plant, food type 1: meat
+    uint foodType = 0;
 
     Food(uint startX, uint startY) {
         position.x = startX;
@@ -15,7 +18,13 @@ public:
     }
 
     void draw(piksel::Graphics& g) {
-        g.fill(glm::vec4(0.75f, 0.75f, 0.75f, 1.0f));
+        if (foodType == 0) {
+            g.fill(glm::vec4(0.0f, 0.0f, 0.0f, 0.33f));
+        }
+        else {
+            g.fill(glm::vec4(1.0f, 0.0f, 0.0f, 0.33f));
+        }
+        g.noStroke();
         g.ellipse(position.x, position.y, size, size);
     }
 };

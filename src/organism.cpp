@@ -5,7 +5,7 @@
 
 
 
-class Being {
+class Organism {
 public:
 
     Vector position;
@@ -13,76 +13,82 @@ public:
 
     int angle;
     float wanderingStrength = 0.5;
-    int maxSpeed = 2;
+    int speed = 2;
 
     bool alive = true;
-    bool breedable = false;
-    int breedableIn = 0;
-    bool reproduced = false;
+    
+    bool horny = false;
+    float horniness = 0;
 
     uint maxSize = 20;
     float currentSize = 7.0;
 
     float energy = 1.0;
     float energyLoss = 0.002;
+    float wallDamage = 0.25;
 
     uint currentLifeTime = 0;
 
-    Being(uint startX, uint startY) {
+    Organism(uint startX, uint startY) {
         position.x = startX;
         position.y = startY;
 
-        direction.x = -1;
+        direction.x = 0;
         direction.y = 0;
     }
 
     void draw(piksel::Graphics& g) {
+        if (energy < 0.1) {
+            g.stroke(glm::vec4(0.9f, 0.0f, 0.0f, 0.5f));
+        }
+        else {
+            g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+        }
         g.ellipse(position.x, position.y, currentSize, currentSize);
         g.line(position.x, position.y, position.x + direction.x * currentSize / 4, position.y + direction.y * currentSize / 4);
     }
 
     void move() {
+        // consume energy, age organism by 1
         energy -= energyLoss;
         currentLifeTime += 1;
 
+        // calculate new step
         angle = randomInt(0, 360);
         direction.x = (direction.x + sin(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
         direction.y = (direction.y + cos(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
 
         float length = std::sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2));
-        direction.x = direction.x / length * maxSpeed;
-        direction.y = direction.y / length * maxSpeed;
-
-        if (position.x + direction.x < 10 || position.x + direction.x > 1070) {
-            alive = false;
-        }
-        else if (position.y + direction.y < 10 || position.y + direction.y > 890) {
-            alive = false;
-        }
-        
-        if (energy <= 0) {
-            alive = false;
-        }
+        direction.x = direction.x / length * speed;
+        direction.y = direction.y / length * speed;
 
         position.x += direction.x;
         position.y += direction.y;
 
+        // check if organism hits the wall and optionally consume energy
+        if (position.x < 10 || position.x > 1090 || position.y < 10 || position.y > 890) {
+            direction.x *= -1;
+            direction.y *= -1;
+            energy -= wallDamage;
+        }
+        
+        // kill organism if its energy reaches 0
+        if (energy <= 0) {
+            alive = false;
+        }
+
+        // grow organism if it didn't reach full size yet
         if (currentSize <= maxSize) {
             currentSize += (float) ((float) maxSize / 200.0);
         }
 
-        if (currentLifeTime == 200 || currentLifeTime >= 200 && breedableIn == 0) {
-            breedable = true;
+        // check if organism is horny, if not raise the horniness
+        if (horniness < 1.0) {
+            horniness += 0.005;
+            horny = false;
         }
-
-        if (reproduced) {
-            breedableIn = 20;
-            breedable = false;
-            reproduced = false;
-        }
-
-        if (breedableIn > 0) {
-            breedableIn -= 1;
+        else {
+            horny = true;
         }
 
     }

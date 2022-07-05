@@ -2,19 +2,34 @@
 #define APP_HPP
 
 #include <piksel/baseapp.hpp>
-#include "being.cpp"
+#include "organism.cpp"
 #include "food.cpp"
 #include <vector>
 
 
 class App : public piksel::BaseApp {
 public:
-    App() : piksel::BaseApp(1100, 900) {}
+
+    uint width;
+    uint height;
+    uint spawnBorderOffset = 20;
+
+    uint initialGenerationSize;
+    uint initialFoodAmount;
+
+    App(uint width, uint height, uint initialGenerationSize, uint initialFoodAmount) : piksel::BaseApp(width, height) {
+        this->width = width;
+        this->height = height;
+
+        this->initialGenerationSize = initialGenerationSize;
+        this->initialFoodAmount = initialFoodAmount;
+    }
+
     void setup();
     void draw(piksel::Graphics& g);
 
     uint iteration;
-    std::vector<Being> beings;
+    std::vector<Organism> organisms;
     std::vector<Food> foods;
 
     float totalLifeTimes = 0.0;
@@ -22,13 +37,13 @@ public:
 
     void spawnInitialGeneration(uint amount) {
         for (uint i=0; i<amount; i++) {
-            beings.push_back(Being(randomInt(20, 1080), randomInt(20, 890)));
+            organisms.push_back(Organism(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset)));
         }
     }
 
-    void spawnInitialFood(uint amount) {
+    void spawnFood(uint amount) {
         for (uint i=0; i<amount; i++) {
-            foods.push_back(Food(randomInt(20, 1080), randomInt(20, 890)));
+            foods.push_back(Food(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset)));
         }
     }
 };
