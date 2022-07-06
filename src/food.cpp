@@ -4,13 +4,18 @@
 #include <iostream>
 
 
+enum FoodType {
+    Plant,
+    Meat
+};
+
 class Food {
 public:
     Vector position;
     uint size = 6;
 
     // food type 0: plant, food type 1: meat
-    uint foodType = 0;
+    FoodType foodType = Plant;
 
     Food(uint startX, uint startY) {
         position.x = startX;

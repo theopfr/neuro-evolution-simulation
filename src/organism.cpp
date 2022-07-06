@@ -4,7 +4,6 @@
 #include <iostream>
 
 
-
 class Organism {
 public:
 
@@ -15,19 +14,22 @@ public:
     float wanderingStrength = 2;
     int speed = 2;
 
-    bool alive = true;
-    
-    bool horny = false;
-    float horniness = 0;
+    Vector sightEdge1;
+    Vector sightEdge2;
+    uint sightAngle = 120;
+    uint sightReach = 25;
 
     uint maxSize = 20;
     float currentSize = 7.0;
 
+    bool alive = true;
     float energy = 1.0;
     float energyLoss = 0.002;
     float wallDamage = 0.25;
-
     uint currentLifeTime = 0;
+
+    bool horny = false;
+    float horniness = 0;
 
     Organism(uint startX, uint startY) {
         position.x = startX;
@@ -45,35 +47,23 @@ public:
             g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         }
         g.ellipse(position.x, position.y, currentSize, currentSize);
-        g.line(position.x, position.y, position.x + direction.x * currentSize / 4, position.y + direction.y * currentSize / 4);
+        g.line(position.x, position.y, position.x + direction.x * (currentSize / 4), position.y + direction.y * (currentSize / 4));
+        g.point(direction.x, direction.y);
+
+        g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 0.2));
+        g.line(position.x, position.y, position.x + sightEdge1.x * (currentSize / 1.75), position.y + sightEdge1.y * (currentSize / 1.75));
+        g.line(position.x, position.y, position.x + sightEdge2.x * (currentSize / 1.75), position.y + sightEdge2.y * (currentSize / 1.75));
     }
 
-    void move() {
+    void observe() {
+        
+    }
+
+    void update() {
         // consume energy, age organism by 1
         energy -= energyLoss;
         currentLifeTime += 1;
 
-        // calculate new step
-        //angle = randomInt(0, 360);
-        angle += randomInt(-20, 20);
-
-        direction.x = (direction.x + sin(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
-        direction.y = (direction.y + cos(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
-
-        float length = std::sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2));
-        direction.x = direction.x / length * speed;
-        direction.y = direction.y / length * speed;
-
-        position.x += direction.x;
-        position.y += direction.y;
-
-        // check if organism hits the wall and optionally consume energy
-        if (position.x + direction.x < 20 || position.x + direction.x > 1070 || position.y + direction.y < 20 || position.y + direction.y > 880) {
-            direction.x *= -1;
-            direction.y *= -1;
-            energy -= wallDamage;
-        }
-        
         // kill organism if its energy reaches 0
         if (energy <= 0) {
             alive = false;
@@ -93,6 +83,36 @@ public:
             horny = true;
         }
 
+        
+    }
+
+    void move() {
+        //angle = randomInt(0, 360);
+        angle += randomInt(-20, 20);
+
+        direction.x = (direction.x + sin(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
+        direction.y = (direction.y + cos(angle * (std::atan(1) * 4 / 180)) * wanderingStrength);
+
+        float length = std::sqrt(std::pow(direction.x, 2) + std::pow(direction.y, 2));
+        direction.x = direction.x / length * speed;
+        direction.y = direction.y / length * speed;
+
+        position.x += direction.x;
+        position.y += direction.y;
+
+        float sightAngleLambda = sightAngle/2 * (std::atan(1) * 4 / 180);
+        sightEdge1.x = (direction.x * cos(sightAngleLambda)) - (direction.y * sin(sightAngleLambda));
+        sightEdge1.y = (direction.x * sin(sightAngleLambda)) + (direction.y * cos(sightAngleLambda));
+
+        sightEdge2.x = (direction.x * cos(-sightAngleLambda)) - (direction.y * sin(-sightAngleLambda));
+        sightEdge2.y = (direction.x * sin(-sightAngleLambda)) + (direction.y * cos(-sightAngleLambda));
+
+        // check if organism hits the wall and optionally consume energy
+        if (position.x + direction.x < 20 || position.x + direction.x > 1070 || position.y + direction.y < 20 || position.y + direction.y > 880) {
+            direction.x *= -1;
+            direction.y *= -1;
+            energy -= wallDamage;
+        }
     }
 
 };

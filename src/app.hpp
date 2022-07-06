@@ -11,8 +11,9 @@
 class App : public piksel::BaseApp {
 public:
 
-    uint animationDelay = 50000;
-
+    uint maxAnimationDelay = 50000;
+    uint animationDelay = maxAnimationDelay;
+    uint animationDelta = 2000;
     uint iteration = 0;
 
     uint width;
@@ -38,34 +39,25 @@ public:
     void setup();
     void draw(piksel::Graphics& g);
     void keyPressed(int key);
-    
+    void spawnFood(uint amount);
+
     std::vector<Organism> organisms;
     std::vector<Food> foods;
 
     float totalLifeTimes = 0.0;
     int totalLifes = 0;
 
-    void spawnInitialGeneration(uint amount) {
-        for (uint i=0; i<amount; i++) {
-            organisms.push_back(Organism(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset)));
-        }
-    }
-
-    void spawnFood(uint amount) {
-        for (uint i=0; i<amount; i++) {
-            foods.push_back(Food(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset)));
-        }
-    }
-
+    
     void handleanimationDelay(piksel::Graphics& g) {
+        // animation speed slide bar
         g.fill(glm::vec4(0.0f, 0.0f, 0.0f, 0.375f));
         g.rect(15, 15, 100, 13);
 
+        // animation speed slider
         g.fill(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 0.5f));
         g.strokeWeight(1.5);
         g.rect(15 + 100.0 * (1.0 - (float) animationDelay / 50000.0), 14, 6, 14);
-
 
         usleep(animationDelay);
     }
