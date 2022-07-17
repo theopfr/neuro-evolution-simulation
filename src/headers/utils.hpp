@@ -1,3 +1,6 @@
+#ifndef UTILS_HPP
+#define UTILS_HPP
+
 #include <iostream>
 #include <random>
 
@@ -10,7 +13,10 @@ inline int randomInt(int min, int max) {
     return distribution(gen);
 }
 
-inline float randomFloat() {
-    return (float) randomInt(-100, 100) / 100.0;
+inline float randomFloat(float min, float max) {
+    return ((float) randomInt(min * 1000.0, max * 1000.0)) / 1000.0;
 }
 
+
+
+#endif

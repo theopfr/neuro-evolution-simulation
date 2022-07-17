@@ -1,13 +1,8 @@
 #include <piksel/baseapp.hpp>
-//#include "utils.cpp"
-//#include "vector.cpp"
 #include <iostream>
+#include <headers/vector.hpp>
+#include "headers/foodType.hpp"
 
-
-enum FoodType {
-    Plant,
-    Meat
-};
 
 class Food {
 public:

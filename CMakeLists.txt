@@ -7,6 +7,10 @@ add_subdirectory(lib/piksel)
 set(SOURCES
     src/main.cpp
     src/app.cpp
+    src/brain.cpp
+    src/organism.cpp
+    src/food.cpp
+    src/vector.cpp
 )
 add_executable(index ${SOURCES})
 target_include_directories(index

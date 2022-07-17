@@ -5,7 +5,7 @@ int main() {
     uint height = 900;
 
     uint initialGenerationSize = 50;
-    uint initialFoodAmount = 50;
+    uint initialFoodAmount = 150;
 
     App app(width, height, initialGenerationSize, initialFoodAmount);
     app.start();

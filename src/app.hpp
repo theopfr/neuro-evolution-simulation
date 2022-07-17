@@ -4,13 +4,15 @@
 #include <piksel/baseapp.hpp>
 #include "organism.cpp"
 #include "food.cpp"
+#include "headers/brain.hpp"
 #include <vector>
 #include <unistd.h>
+#include <random>
+#include "headers/foodType.hpp"
 
 
 class App : public piksel::BaseApp {
 public:
-
     uint maxAnimationDelay = 50000;
     uint animationDelay = maxAnimationDelay;
     uint animationDelta = 2000;
@@ -48,7 +50,7 @@ public:
     int totalLifes = 0;
 
     
-    void handleanimationDelay(piksel::Graphics& g) {
+    void handleAnimationDelay(piksel::Graphics& g) {
         // animation speed slide bar
         g.fill(glm::vec4(0.0f, 0.0f, 0.0f, 0.375f));
         g.rect(15, 15, 100, 13);
@@ -61,6 +63,7 @@ public:
 
         usleep(animationDelay);
     }
+
 };
 #endif /* APP_HPP */
 

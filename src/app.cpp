@@ -39,7 +39,8 @@ void App::keyPressed(int key) {
 
 void App::setup() {
     for (uint i=0; i<initialGenerationSize; i++) {
-        organisms.push_back(Organism(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset)));
+        Organism organism = Organism(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset));
+        organisms.push_back(organism);
     }
     spawnFood(initialFoodAmount);
 }
@@ -55,10 +56,7 @@ void App::draw(piksel::Graphics& g) {
 
     // iterate over organisms
     for (uint i=0; i<organisms.size() - 1; i++) {
-        organisms.at(i).draw(g);
-        organisms.at(i).move();
-        organisms.at(i).update();
-
+    
         // remove organism if dead and leave meat
         if (!organisms.at(i).alive) {
             totalLifes += 1;
@@ -69,7 +67,16 @@ void App::draw(piksel::Graphics& g) {
 
             foods.push_back(foodFromOrganism);
             organisms.erase(organisms.begin() + i);
+            continue;
         }
+
+        else {
+            // std::cout << "organism " << i << ": ";
+        }
+
+        organisms.at(i).draw(g);
+        organisms.at(i).move();
+        organisms.at(i).update();
 
         // check for collision with other organisms
         for (uint j=0; j<organisms.size() - 1; j++) {
@@ -89,14 +96,7 @@ void App::draw(piksel::Graphics& g) {
         // check for collision with food
         for (uint j=0; j<foods.size() - 1; j++) {
             if (distance(organisms.at(i).position, foods.at(j).position) < (organisms.at(i).currentSize / 2 + foods.at(j).size / 2)) {
-                
-                if (foods.at(j).foodType == Plant) {
-                    organisms.at(i).energy += 0.2;
-                }
-                else if (foods.at(j).foodType == Meat) {
-                    organisms.at(i).energy += 0.1;
-                }
-
+                organisms.at(i).eat(foods.at(j).foodType);
                 foods.erase(foods.begin() + j);
                 break;
             }
@@ -108,9 +108,13 @@ void App::draw(piksel::Graphics& g) {
         foods.at(i).draw(g);
     }
 
-    if (iteration % 20 == 0) {
+    /*if (iteration % 10 == 0) {
         spawnFood(randomInt(1, 3));
+    }*/
+
+    if (foods.size() < initialFoodAmount) {
+        spawnFood(initialFoodAmount - foods.size());
     }
 
-    handleanimationDelay(g);
+    handleAnimationDelay(g);
 }
