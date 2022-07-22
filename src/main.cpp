@@ -1,11 +1,11 @@
 #include "app.hpp"
 
 int main() {
-    uint width = 1100;
-    uint height = 900;
+    uint width = 1300;
+    uint height = 1000;
 
-    uint initialGenerationSize = 50;
-    uint initialFoodAmount = 150;
+    uint initialGenerationSize = 100;
+    uint initialFoodAmount = 200;
 
     App app(width, height, initialGenerationSize, initialFoodAmount);
     app.start();

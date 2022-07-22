@@ -24,6 +24,7 @@ public:
     float* sigmoid(float* x, uint length);
     float* tanh(float* x, uint length);
     float* forward(float* input);
+    void mutate();
 };
 
 #endif /* BRAIN_HPP */

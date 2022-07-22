@@ -1,6 +1,7 @@
 #include "app.hpp"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 
 float distance(Vector a, Vector b) {
@@ -39,7 +40,9 @@ void App::keyPressed(int key) {
 
 void App::setup() {
     for (uint i=0; i<initialGenerationSize; i++) {
-        Organism organism = Organism(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset));
+        Organism organism = Organism();
+        organism.setPosition(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset));
+        organism.setRandomGenes();
         organisms.push_back(organism);
     }
     spawnFood(initialFoodAmount);
@@ -53,10 +56,11 @@ void App::draw(piksel::Graphics& g) {
     if (organisms.size() - 1 == 0) {
         std::cout << " average lifetime: " << totalLifeTimes / totalLifes << std::endl;
     }
+    
+    // std::cout << organisms.size() << std::endl;
 
     // iterate over organisms
     for (uint i=0; i<organisms.size() - 1; i++) {
-    
         // remove organism if dead and leave meat
         if (!organisms.at(i).alive) {
             totalLifes += 1;
@@ -64,19 +68,18 @@ void App::draw(piksel::Graphics& g) {
 
             Food foodFromOrganism = Food(organisms.at(i).position.x, organisms.at(i).position.y);
             foodFromOrganism.foodType = Meat;
-
             foods.push_back(foodFromOrganism);
-            organisms.erase(organisms.begin() + i);
-            continue;
-        }
 
-        else {
-            // std::cout << "organism " << i << ": ";
+            organisms.erase(organisms.begin() + i);
+
+            continue;
         }
 
         organisms.at(i).draw(g);
         organisms.at(i).move();
         organisms.at(i).update();
+
+        //std::cout << i << ": ";
 
         // check for collision with other organisms
         for (uint j=0; j<organisms.size() - 1; j++) {
@@ -85,7 +88,12 @@ void App::draw(piksel::Graphics& g) {
             }
             if (distance(organisms.at(i).position, organisms.at(j).position) < (organisms.at(i).currentSize / 2 + organisms.at(j).currentSize / 2)) {
                 if (organisms.at(i).horny && organisms.at(j).horny) {
-                    organisms.push_back(Organism(organisms.at(i).position.x, organisms.at(i).position.y));
+                    Organism organism = Organism();
+                    organism.setPosition(organisms.at(i).position.x, organisms.at(i).position.y);
+                    organism.inheritGenes(organisms.at(i), organisms.at(j));
+
+                    organisms.push_back(organism);
+
                     organisms.at(i).horniness -= 0.1;
                     organisms.at(j).horniness -= 0.1;
                     break;
@@ -108,10 +116,7 @@ void App::draw(piksel::Graphics& g) {
         foods.at(i).draw(g);
     }
 
-    /*if (iteration % 10 == 0) {
-        spawnFood(randomInt(1, 3));
-    }*/
-
+    // create new food
     if (foods.size() < initialFoodAmount) {
         spawnFood(initialFoodAmount - foods.size());
     }
