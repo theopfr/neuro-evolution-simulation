@@ -42,7 +42,7 @@ void App::setup() {
     for (uint i=0; i<initialGenerationSize; i++) {
         Organism organism = Organism();
         organism.setPosition(randomInt(spawnBorderOffset, this->width - spawnBorderOffset), randomInt(spawnBorderOffset, this->height - spawnBorderOffset));
-        organism.setRandomGenes();
+        organism.determineStats();
         organisms.push_back(organism);
     }
     spawnFood(initialFoodAmount);
@@ -79,7 +79,7 @@ void App::draw(piksel::Graphics& g) {
         organisms.at(i).move();
         organisms.at(i).update();
 
-        //std::cout << i << ": ";
+        // std::cout << i << ": " << organisms.at(i).genes.getMaxSize() << " " << organisms.at(i).speed << std::endl;;
 
         // check for collision with other organisms
         for (uint j=0; j<organisms.size() - 1; j++) {
@@ -91,6 +91,7 @@ void App::draw(piksel::Graphics& g) {
                     Organism organism = Organism();
                     organism.setPosition(organisms.at(i).position.x, organisms.at(i).position.y);
                     organism.inheritGenes(organisms.at(i), organisms.at(j));
+                    organism.determineStats();
 
                     organisms.push_back(organism);
 
@@ -117,9 +118,9 @@ void App::draw(piksel::Graphics& g) {
     }
 
     // create new food
-    if (foods.size() < initialFoodAmount) {
-        spawnFood(initialFoodAmount - foods.size());
-    }
+    //if (foods.size() < initialFoodAmount) {
+    spawnFood(randomFloat(0, 3));
+    //}
 
     handleAnimationDelay(g);
 }

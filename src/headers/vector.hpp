@@ -9,5 +9,6 @@ public:
     float y;
 
     float length();
+    void normalize();
 };
 #endif
