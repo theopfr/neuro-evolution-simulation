@@ -5,6 +5,8 @@
 #include "headers/vector.hpp"
 #include "headers/foodType.hpp"
 #include "headers/brain.hpp"
+#include "headers/food.hpp"
+
 
 
 struct Genes {
@@ -15,8 +17,11 @@ struct Genes {
     uint universalMaxSightAngle = 160;
     uint universalMinSightAngle = 75;
 
-    uint universalMaxSightReach = 40;
-    uint universalMinSightReach = 20;
+    uint universalMaxSightReach = 100;
+    uint universalMinSightReach = 50;
+
+    uint mutationProbability = 20;
+    float mutationFactor = 0.05;
 
     float diet;
     float maxSize;
@@ -33,7 +38,6 @@ struct Genes {
     }
 
     float getMaxSize() {
-        // std::cout << convertToRange(maxSize, (float) universalMinAdultSize, (float) universalMaxAdultSize) << std::endl;
         return convertToRange(maxSize, 0.0, 1.0, (float) universalMinAdultSize, (float) universalMaxAdultSize);
     }
 
@@ -44,13 +48,29 @@ struct Genes {
     float getSightReach() {
         return convertToRange(sightReach, 0.0, 1.0, (float) universalMinSightReach, (float) universalMaxSightReach);
     }
- 
+
     void mutate() {
-        return;
+        mutateGene(diet);
+        mutateGene(maxSize);
+        mutateGene(sightAngle);
+        mutateGene(sightReach);
+    }
+ 
+    void mutateGene(float& gene) {
+        uint randInt = randomInt(0, 100);
+        if (randInt <= mutationProbability) {
+            gene += randomFloat(-mutationFactor, mutationFactor);
+            if (gene < 0.0) {
+                gene = 0.0;
+            }
+            else if (gene > 1.0) {
+                gene = 1.0;
+            }
+        }
     }
 
     void setRandomGenes() {
-        diet = randomFloat(0.0, 0.5);
+        diet = randomFloat(0.0, 1.0);
         maxSize = randomFloat(0.0, 1.0);
         sightAngle = randomFloat(0.0, 1.0);
         sightReach = randomFloat(0.0, 1.0);
@@ -99,6 +119,9 @@ public:
     bool horny = false;
     float horniness = 0;
 
+    float recurrentState = randomFloat(0.0, 1.0);
+    std::vector<float> observations;
+
     Organism() {
         angle = randomInt(0, 360);
         direction.x = sin(angle * (std::atan(1) * 4 / 180));
@@ -113,21 +136,10 @@ public:
             g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
-        g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         g.ellipse(position.x, position.y, currentSize, currentSize);
         g.line(position.x, position.y, position.x + direction.x * (currentSize * 0.5), position.y + direction.y * (currentSize * 0.5));
 
         // draw two lines around the direction line to indicate the sight angle and reach
-        float sightAngleLambda = genes.getSightAngle() / 2 * (std::atan(1) * 4 / 180);
-        sightEdge1.x = (direction.x * cos(sightAngleLambda)) - (direction.y * sin(sightAngleLambda));
-        sightEdge1.y = (direction.x * sin(sightAngleLambda)) + (direction.y * cos(sightAngleLambda));
-
-        sightEdge2.x = (direction.x * cos(-sightAngleLambda)) - (direction.y * sin(-sightAngleLambda));
-        sightEdge2.y = (direction.x * sin(-sightAngleLambda)) + (direction.y * cos(-sightAngleLambda));
-
-        sightEdge1.normalize();
-        sightEdge2.normalize();
-
         float maxReachLineFactor = 1.25;
         float minReachLineFactor = 0.75;
         float reachLineFactor = convertToRange(genes.sightReach, 0.0, 1.0, minReachLineFactor, maxReachLineFactor);
@@ -174,8 +186,8 @@ public:
     }
 
     void determineDiet() {
-        // 'diet' is value between '0' and '1'. '0' means the organism is 100% herbivious, '1' means it's 100% carnivious.
-        // Tending 100% towads one food type means it gains 'maxEnergyGainByFood' if it eats that type of food and '0' if it eats the other.
+        // 'diet' is a value between '0' and '1'. '0' means the organism is 100% herbivious, '1' means it's 100% carnivious.
+        // Tending 100% towards one food type means it gains 'maxEnergyGainByFood' if it eats that type of food and '0' if it eats the other.
         // Everything in between means it gets ('diet' * 'maxEnergyGainByFood') when eating the preferred food type and
         // (1 - 'diet' * 'maxEnergyGainByFood') when eating the other
 
@@ -195,20 +207,87 @@ public:
     void determineSpeed() {
         float additionalSpeedFactor = 1.0 - genes.maxSize;
         speed = minSpeed + (maxSpeed - minSpeed) * additionalSpeedFactor;
-        //std::cout << speed << " " << additionalSpeedFactor << " " << genes.getMaxSize() << " " << convertToRange(genes.maxSize, 13.0, 23.0, 0.0, 1.0) << std::endl;
     }
 
     void eat(FoodType foodType) {
         if (foodType == Plant) {
-            energy += energyGainByPlant;
+            //std::cout << energy << " ";
+            energy += 0.3;
+            //std::cout << energy << std::endl;
         }
         else if (foodType == Meat) {
             energy += energyGainByMeat;
         }
     }
 
-    void observe() {
-        
+    void observe(piksel::Graphics& g, std::vector<Organism> &organisms, std::vector<Food> &foods) {
+        // check for collision with other organisms
+        for (uint i=0; i<organisms.size() - 1; i++) {
+            if (&organisms.at(i) == this) {
+                continue;
+            }
+            
+            if (position.distance(organisms.at(i).position) < (currentSize / 2 + organisms.at(i).currentSize / 2)) {
+                if (horny && organisms.at(i).horny && energy >= 1.5 && organisms.at(i).energy >= 1.5) {
+
+                    Organism organism = Organism();
+                    organism.setPosition(position.x, position.y);
+                    organism.inheritGenes(*this, organisms.at(i));
+                    organism.determineStats();
+
+                    organisms.push_back(organism);
+
+                    horniness -= 0.1;
+                    organisms.at(i).horniness -= 0.1;
+                    break;
+                }
+            }
+        }
+
+        // check for collision with food or distance to food        
+        observations = { randomFloat(0.0, 1.0), randomFloat(0.0, 1.0), recurrentState };
+
+        bool foodFound = false;
+        uint clostestFoodIndex = 0;
+        float shortestDistanceToFood = genes.getSightReach();
+
+        for (uint i=0; i<foods.size() - 1; i++) {
+            float distanceToFood = position.distance(foods.at(i).position);
+
+            if (distanceToFood < (currentSize / 2 + foods.at(i).size / 2)) {
+                eat(foods.at(i).foodType);
+                foods.erase(foods.begin() + i);
+            }
+
+            if (distanceToFood <= shortestDistanceToFood) {
+                foodFound = true;
+
+                clostestFoodIndex = i;
+                shortestDistanceToFood = distanceToFood;
+                /*sightEdge1.x = position.x + sightEdge1.x * genes.getSightReach();
+                sightEdge1.y = position.y + sightEdge1.y * genes.getSightReach();
+                sightEdge2.x = position.x + sightEdge2.x * genes.getSightReach();
+                sightEdge2.y = position.y + sightEdge2.y * genes.getSightReach();
+
+                std::cout << "S1 " << "x: " << sightEdge1.x << " y: " << sightEdge1.y << std::endl;
+                std::cout << "P " << "x: " << position.x << " y: " << position.y << std::endl;
+                std::cout << sightEdge1.distance(foods.at(i).position) << " " << genes.getSightReach() << std::endl;
+                std::cout << "\n\n------------------\n\n" << std::endl;
+
+                observations = { sightEdge1.distance(foods.at(i).position) / genes.getSightReach(), sightEdge2.distance(foods.at(i).position) / genes.getSightReach(), recurrentState };
+                */
+            }
+        }
+
+        if (foodFound) {
+            sightEdge1.x = position.x + sightEdge1.x * genes.getSightReach();
+            sightEdge1.y = position.y + sightEdge1.y * genes.getSightReach();
+            sightEdge2.x = position.x + sightEdge2.x * genes.getSightReach();
+            sightEdge2.y = position.y + sightEdge2.y * genes.getSightReach();
+
+            observations = { sightEdge1.distance(foods.at(clostestFoodIndex).position) / genes.getSightReach(), sightEdge2.distance(foods.at(clostestFoodIndex).position) / genes.getSightReach(), recurrentState };
+        }
+
     }
 
     void update() {
@@ -237,29 +316,34 @@ public:
     }
 
     void move() {
-        //angle = randomInt(0, 360);
+        //float observation[3] = { randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0) };
+        float* output = brain.forward(observations);
 
-        float observation[5] = { randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0), randomFloat(-2.0, 2.0) };
-        float* output = brain.forward(observation);
+        float angle = output[0];
+        recurrentState = output[1];
 
         float maxAngleDelta = (genes.getSightAngle() / 2.0) * wanderingStrength;
-        //angle = ((output[0] - 0.0) / (1.0 - 0.0)) * (maxAngleDelta - (-maxAngleDelta)) + (-maxAngleDelta); //randomFloat(0.0, 1.0);
-        angle = convertToRange(output[0], 0.0, 1.0, -maxAngleDelta, maxAngleDelta);
+        angle = convertToRange(angle, 0.0, 1.0, -maxAngleDelta, maxAngleDelta);
 
         // calculate turn angle
         angle = angle * (std::atan(1) * 4 / 180);
         direction.x = (direction.x * cos(angle)) - (direction.y * sin(angle));
         direction.y = (direction.x * sin(angle)) + (direction.y * cos(angle));
-
-        // normalize next step
-        //direction.x = direction.x / length * speed;
-        //direction.y = direction.y / length * speed;
-
         direction.normalize();
 
         // update position
         position.x += direction.x * speed;
         position.y += direction.y * speed;
+
+        float sightAngleLambda = genes.getSightAngle() / 2 * (std::atan(1) * 4 / 180);
+        sightEdge1.x = (direction.x * cos(sightAngleLambda)) - (direction.y * sin(sightAngleLambda));
+        sightEdge1.y = (direction.x * sin(sightAngleLambda)) + (direction.y * cos(sightAngleLambda));
+
+        sightEdge2.x = (direction.x * cos(-sightAngleLambda)) - (direction.y * sin(-sightAngleLambda));
+        sightEdge2.y = (direction.x * sin(-sightAngleLambda)) + (direction.y * cos(-sightAngleLambda));
+
+        sightEdge1.normalize();
+        sightEdge2.normalize();
 
         // check if organism hits the wall and consume energy if it does
         if (position.x + direction.x < 20 || position.x + direction.x > 1270 || position.y + direction.y < 20 || position.y + direction.y > 970) {

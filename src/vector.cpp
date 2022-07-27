@@ -11,3 +11,7 @@ void Vector::normalize() {
     x = x / length;
     y = y / length;
 }
+
+float Vector::distance(Vector v) {
+    return std::sqrt(std::pow(x - v.x, 2) + std::pow(y - v.y, 2));
+}

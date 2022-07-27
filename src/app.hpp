@@ -2,14 +2,13 @@
 #define APP_HPP
 
 #include <piksel/baseapp.hpp>
-#include "organism.cpp"
-#include "food.cpp"
-#include "headers/brain.hpp"
 #include <vector>
 #include <unistd.h>
 #include <random>
 #include "headers/foodType.hpp"
-
+#include "organism.cpp"
+#include "headers/food.hpp"
+#include "headers/brain.hpp"
 
 class App : public piksel::BaseApp {
 public:

@@ -2,9 +2,9 @@
 #include "headers/brain.hpp"
 
 
-uint Brain::inputSize = 5;
-uint Brain::hiddenSize = 4;
-uint Brain::outputSize = 3;
+uint Brain::inputSize = 3;
+uint Brain::hiddenSize = 3;
+uint Brain::outputSize = 2;
 
 Brain::Brain() {
     randomInitializeBrain();
@@ -60,7 +60,8 @@ float* Brain::dot(float** w, float* x, uint matRows, uint matCols) {
     return result;
 }
 
-float* Brain::forward(float* input) {
+float* Brain::forward(std::vector<float> observation) {
+    float* input = &observation[0];
     float* hiddenLayer = tanh(dot(weightMatrix1, input, hiddenSize, inputSize), hiddenSize);
     float* output = sigmoid(dot(weightMatrix2, hiddenLayer, outputSize, hiddenSize), outputSize);
 

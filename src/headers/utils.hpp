@@ -21,4 +21,6 @@ inline float convertToRange(float value, float oldMin, float oldMax, float newMi
     return ((value - oldMin) / (oldMax - oldMin)) * (newMax - newMin) + newMin;
 }
 
+
+
 #endif

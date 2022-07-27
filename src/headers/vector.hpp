@@ -10,5 +10,6 @@ public:
 
     float length();
     void normalize();
+    float distance(Vector v);
 };
 #endif
