@@ -2,7 +2,7 @@
 
 ## Rules:
 (values mentioned below can be configured and experimented with)
-1. An organism looses ``0.004`` energry starting at ``1.0``, if the energy reaches ``0.0`` the organism dies and it converts to meat based food.
+1. An organism looses ``0.004`` energy each time-step starting at ``1.0``, if the energy reaches ``0.0`` the organism dies and it converts to meat based food.
 2. If an organism runs into plant based or meat based food it gains specific amount of energy somewhere between ``[0.0; 0.5]`` depending on its ``diet`` gene.
 3. If an organism runs into another and both are "horny" (which means its "horniness is ``1.0``) they produce a child ("horniness" starts at ``0.0`` and increases by ``0.005`` each time-step until it reaches ``1.0``).
 4. If two organisms produce a child they both lose ``0.1`` "horniness" but gain ``0.005`` each iteration until it is at ``1.0`` again.
