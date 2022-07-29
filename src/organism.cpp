@@ -57,8 +57,7 @@ struct Genes {
     }
  
     void mutateGene(float& gene) {
-        uint randInt = randomInt(0, 100);
-        if (randInt <= mutationProbability) {
+        if (randomInt(0, 100) <= mutationProbability) {
             gene += randomFloat(-mutationFactor, mutationFactor);
             if (gene < 0.0) {
                 gene = 0.0;
@@ -70,7 +69,7 @@ struct Genes {
     }
 
     void setRandomGenes() {
-        diet = randomFloat(0.0, 1.0);
+        diet = randomFloat(0.0, 0.3);
         maxSize = randomFloat(0.0, 1.0);
         sightAngle = randomFloat(0.0, 1.0);
         sightReach = randomFloat(0.0, 1.0);
@@ -109,10 +108,10 @@ public:
     bool alive = true;
     float energy = 1.0;
     float energyLoss = 0.004;
-    float wallDamage = 0.2;
+    float wallDamage = 0.75;
     uint currentLifeTime = 0;
 
-    float maxEnergyGainByFood = 0.4;
+    float maxEnergyGainByFood = 0.5;
     float energyGainByPlant;
     float energyGainByMeat;
 
@@ -191,9 +190,8 @@ public:
         // Everything in between means it gets ('diet' * 'maxEnergyGainByFood') when eating the preferred food type and
         // (1 - 'diet' * 'maxEnergyGainByFood') when eating the other
 
-        float energyGainByMajor = genes.getDiet() * maxEnergyGainByFood;
+        /*float energyGainByMajor = genes.getDiet() * maxEnergyGainByFood;
         float energyGainByMinor = maxEnergyGainByFood - energyGainByMajor;
-
         if (genes.getDiet() < 0.5) {
             energyGainByPlant = energyGainByMajor;
             energyGainByMeat = energyGainByMinor;
@@ -201,6 +199,15 @@ public:
         else {
             energyGainByMeat = energyGainByMajor;
             energyGainByPlant = energyGainByMinor;
+        }*/
+
+        if (genes.getDiet() < 0.5) {
+            energyGainByPlant = (1 - genes.getDiet()) * maxEnergyGainByFood;
+            energyGainByMeat = genes.getDiet() * maxEnergyGainByFood;
+        }
+        else {
+            energyGainByMeat = genes.getDiet() * maxEnergyGainByFood;
+            energyGainByPlant = (1 - genes.getDiet()) * maxEnergyGainByFood;
         }
     }
 
@@ -211,9 +218,7 @@ public:
 
     void eat(FoodType foodType) {
         if (foodType == Plant) {
-            //std::cout << energy << " ";
-            energy += 0.3;
-            //std::cout << energy << std::endl;
+            energy += energyGainByPlant;
         }
         else if (foodType == Meat) {
             energy += energyGainByMeat;
@@ -229,7 +234,7 @@ public:
             
             if (position.distance(organisms.at(i).position) < (currentSize / 2 + organisms.at(i).currentSize / 2)) {
                 if (horny && organisms.at(i).horny && energy >= 1.5 && organisms.at(i).energy >= 1.5) {
-
+                    //std::cout << this << " true" << std::endl;
                     Organism organism = Organism();
                     organism.setPosition(position.x, position.y);
                     organism.inheritGenes(*this, organisms.at(i));

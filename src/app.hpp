@@ -10,6 +10,18 @@
 #include "headers/food.hpp"
 #include "headers/brain.hpp"
 
+#include "headers/json.hpp"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <fstream> 
+
+
 class App : public piksel::BaseApp {
 public:
     uint maxAnimationDelay = 50000;
@@ -24,6 +36,12 @@ public:
     uint initialGenerationSize;
     uint initialFoodAmount;
 
+
+    char simulationDataPath[32] = "../data/simulation_data.json";
+    std::vector<float> sizes;
+    std::vector<float> sightAngles;
+    std::vector<float> sightReaches;
+
     App(
         uint width, 
         uint height, 
@@ -35,6 +53,10 @@ public:
 
         this->initialGenerationSize = initialGenerationSize;
         this->initialFoodAmount = initialFoodAmount;
+
+        std::ofstream fw (simulationDataPath, std::ofstream::out);
+        fw << "";
+        fw.close();
     }
 
     void setup();
@@ -44,10 +66,6 @@ public:
 
     std::vector<Organism> organisms;
     std::vector<Food> foods;
-
-    float totalLifeTimes = 0.0;
-    int totalLifes = 0;
-
     
     void handleAnimationDelay(piksel::Graphics& g) {
         // animation speed slide bar
