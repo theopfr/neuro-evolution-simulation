@@ -39,6 +39,7 @@ public:
 
     char simulationDataPath[32] = "../data/simulation_data.json";
     std::vector<float> sizes;
+    std::vector<float> diets;
     std::vector<float> sightAngles;
     std::vector<float> sightReaches;
 

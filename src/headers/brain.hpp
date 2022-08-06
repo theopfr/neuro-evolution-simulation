@@ -10,9 +10,9 @@
 
 class Brain {
 public:
-    static uint inputSize;
-    static uint hiddenSize;
-    static uint outputSize;
+    uint inputSize;
+    uint hiddenSize;
+    uint outputSize;
 
     float **weightMatrix1;
     float **weightMatrix2;

@@ -1,15 +1,13 @@
 
 #include "headers/brain.hpp"
+#include "headers/config.hpp"
 
-
-uint Brain::inputSize = 3;
-uint Brain::hiddenSize = 3;
-uint Brain::outputSize = 2;
-
-uint mutationProbability = 7;
-float mutationFactor = 0.01;
 
 Brain::Brain() {
+    inputSize = config_inputSize;
+    hiddenSize = config_hiddenSize;
+    outputSize = config_outputSize;
+
     randomInitializeBrain();
 }
 
@@ -74,16 +72,16 @@ float* Brain::forward(std::vector<float> observation) {
 void Brain::mutate() {
     for (uint i=0; i<hiddenSize; i++) {
         for (uint j=0; j<inputSize; j++) {
-            if (randomInt(0, 100) <= mutationProbability) {
-                weightMatrix1[i][j] += randomFloat(-mutationFactor, mutationFactor);
+            if (randomInt(0, 100) <= config_brainMutationProbability) {
+                weightMatrix1[i][j] += randomFloat(-config_brainMutationFactor, config_brainMutationFactor);
             }
         }   
     }
 
     for (uint i=0; i<outputSize; i++) {
         for (uint j=0; j<hiddenSize; j++) {
-            if (randomInt(0, 100) <= mutationProbability) {
-                weightMatrix2[i][j] += randomFloat(-mutationFactor, mutationFactor);
+            if (randomInt(0, 100) <= config_brainMutationProbability) {
+                weightMatrix2[i][j] += randomFloat(-config_brainMutationFactor, config_brainMutationFactor);
             }
         }   
     }

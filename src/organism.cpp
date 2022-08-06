@@ -6,22 +6,23 @@
 #include "headers/foodType.hpp"
 #include "headers/brain.hpp"
 #include "headers/food.hpp"
+#include "headers/config.hpp"
 
 
 
 struct Genes {
     // universal bounderies for gene values
-    uint universalMaxAdultSize = 23;
-    uint universalMinAdultSize = 12;
+    uint universalMaxAdultSize = config_universalMaxAdultSize;
+    uint universalMinAdultSize = config_universalMinAdultSize;
 
-    uint universalMaxSightAngle = 160;
-    uint universalMinSightAngle = 75;
+    uint universalMaxSightAngle = config_universalMaxSightAngle;
+    uint universalMinSightAngle = config_universalMinSightAngle;
 
-    uint universalMaxSightReach = 100;
-    uint universalMinSightReach = 50;
+    uint universalMaxSightReach = config_universalMaxSightReach;
+    uint universalMinSightReach = config_universalMinSightReach;
 
-    uint mutationProbability = 20;
-    float mutationFactor = 0.05;
+    uint mutationProbability = config_geneMutationProbability;
+    float mutationFactor = config_geneMutationFactor;
 
     float diet;
     float maxSize;
@@ -92,31 +93,32 @@ public:
 
     // current direction and speed
     float angle;
-    float wanderingStrength = 0.325;
+    float wanderingStrength = config_wanderingStrength;
 
     float speed;
-    float minSpeed = 2.0;
-    float maxSpeed = 4.0;
+    float minSpeed = config_minSpeed;
+    float maxSpeed = config_maxSpeed;
 
     // current sight angle and reach
     Vector sightEdge1;
     Vector sightEdge2;
 
     // size values
-    float currentSize = 7.0;
+    float currentSize = config_currentSize;
 
     bool alive = true;
     float energy = 1.0;
-    float energyLoss = 0.004;
-    float wallDamage = 0.75;
+    float energyLoss = config_energyLoss;
+    float wallDamage = config_wallDamage;
     uint currentLifeTime = 0;
 
-    float maxEnergyGainByFood = 0.5;
+    float maxEnergyGainByFood = config_maxEnergyGainByFood;
     float energyGainByPlant;
     float energyGainByMeat;
 
     bool horny = false;
-    float horniness = 0;
+    float horniness = 0.0;
+    float horninessRegeneration = config_horninessRegeneration;
 
     float recurrentState = randomFloat(0.0, 1.0);
     std::vector<float> observations;
@@ -189,17 +191,6 @@ public:
         // Tending 100% towards one food type means it gains 'maxEnergyGainByFood' if it eats that type of food and '0' if it eats the other.
         // Everything in between means it gets ('diet' * 'maxEnergyGainByFood') when eating the preferred food type and
         // (1 - 'diet' * 'maxEnergyGainByFood') when eating the other
-
-        /*float energyGainByMajor = genes.getDiet() * maxEnergyGainByFood;
-        float energyGainByMinor = maxEnergyGainByFood - energyGainByMajor;
-        if (genes.getDiet() < 0.5) {
-            energyGainByPlant = energyGainByMajor;
-            energyGainByMeat = energyGainByMinor;
-        }
-        else {
-            energyGainByMeat = energyGainByMajor;
-            energyGainByPlant = energyGainByMinor;
-        }*/
 
         if (genes.getDiet() < 0.5) {
             energyGainByPlant = (1 - genes.getDiet()) * maxEnergyGainByFood;
@@ -312,7 +303,7 @@ public:
 
         // check if organism is horny, if not raise the horniness
         if (horniness < 1.0) {
-            horniness += 0.005;
+            horniness += horninessRegeneration;
             horny = false;
         }
         else {
@@ -351,15 +342,10 @@ public:
         sightEdge2.normalize();
 
         // check if organism hits the wall and consume energy if it does
-        if (position.x + direction.x < 20 || position.x + direction.x > 1270 || position.y + direction.y < 20 || position.y + direction.y > 970) {
+        if (position.x + direction.x < (currentSize / 2) || position.x + direction.x > config_windowWidth - (currentSize / 2) || position.y + direction.y < currentSize / 2 || position.y + direction.y > config_windowHeight - (currentSize / 2)) {
             direction.x *= -1;
             direction.y *= -1;
             energy -= wallDamage;
         }
     }
-
-    void crossover() {
-
-    }
-
 };

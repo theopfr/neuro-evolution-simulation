@@ -83,6 +83,7 @@ void App::draw(piksel::Graphics& g) {
             organisms.at(i).update();
 
             sizes.push_back(organisms.at(i).genes.getMaxSize());
+            diets.push_back(organisms.at(i).genes.getDiet());
             sightAngles.push_back(organisms.at(i).genes.getSightAngle());
             sightReaches.push_back(organisms.at(i).genes.getSightReach());
         }
@@ -92,6 +93,7 @@ void App::draw(piksel::Graphics& g) {
     for (uint i=0; i<foods.size() - 1; i++) {
         foods.at(i).draw(g);
     }
+
     spawnFood(randomFloat(0, 3));
 
     // log simulation data
@@ -102,6 +104,7 @@ void App::draw(piksel::Graphics& g) {
 
         outJson[std::to_string(iteration)]["organismAmount"] = amount;
         outJson[std::to_string(iteration)]["sizes"] = sizes;
+        outJson[std::to_string(iteration)]["diets"] = sightReaches;
         outJson[std::to_string(iteration)]["sightAngles"] = sightAngles;
         outJson[std::to_string(iteration)]["sightReaches"] = sightReaches;
 

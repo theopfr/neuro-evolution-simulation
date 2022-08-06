@@ -8,6 +8,7 @@ set(SOURCES
     src/main.cpp
     src/app.cpp
     src/brain.cpp
+    src/config.cpp
     src/organism.cpp
     src/food.cpp
     src/vector.cpp
