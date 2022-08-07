@@ -96,6 +96,7 @@ void App::draw(piksel::Graphics& g) {
 
     spawnFood(randomFloat(0, 3));
 
+
     // log simulation data
     int amount = organisms.size();
     if (iteration % 25 == 0) {
@@ -104,7 +105,7 @@ void App::draw(piksel::Graphics& g) {
 
         outJson[std::to_string(iteration)]["organismAmount"] = amount;
         outJson[std::to_string(iteration)]["sizes"] = sizes;
-        outJson[std::to_string(iteration)]["diets"] = sightReaches;
+        outJson[std::to_string(iteration)]["diets"] = diets;
         outJson[std::to_string(iteration)]["sightAngles"] = sightAngles;
         outJson[std::to_string(iteration)]["sightReaches"] = sightReaches;
 
@@ -114,6 +115,7 @@ void App::draw(piksel::Graphics& g) {
     }
 
     sizes.clear();
+    diets.clear();
     sightAngles.clear();
     sightReaches.clear();
 

@@ -70,7 +70,7 @@ struct Genes {
     }
 
     void setRandomGenes() {
-        diet = randomFloat(0.0, 0.3);
+        diet = randomFloat(0.0, 1.0);
         maxSize = randomFloat(0.0, 1.0);
         sightAngle = randomFloat(0.0, 1.0);
         sightReach = randomFloat(0.0, 1.0);
@@ -148,8 +148,11 @@ public:
         g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 0.2));
         g.line(position.x, position.y, position.x + sightEdge1.x * (currentSize * reachLineFactor), position.y + sightEdge1.y * (currentSize * reachLineFactor));
         g.line(position.x, position.y, position.x + sightEdge2.x * (currentSize * reachLineFactor), position.y + sightEdge2.y * (currentSize * reachLineFactor));
-    }
 
+        g.ellipse(position.x + sightEdge1.x * (currentSize * reachLineFactor), position.y + sightEdge1.y * (currentSize * reachLineFactor), 3, 3);
+        g.ellipse(position.x + sightEdge2.x * (currentSize * reachLineFactor), position.y + sightEdge2.y * (currentSize * reachLineFactor), 3, 3);
+    }
+    
     void setPosition(uint startX, uint startY) {
         position.x = startX;
         position.y = startY;

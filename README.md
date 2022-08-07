@@ -15,20 +15,25 @@
 (all gene ranges can be configured and experimented with)
 1. ``diet``: A value in range ``[0.0; 1.0]``. The closer it is to ``0.0`` the more energy the organism gains from plant based food. The closer to ``1.0`` the more energy it gains from meat.
 2. ``size``: A value in range ``[12.0; 23.0]`` which represent the max adult size of an organism. The size also determines the speed of an organism by getting mappend to the speed range of ``[2.0, 4.0]``.
-3. ``sightAngle``: A value in range ``[75.0; 160.0]`` which determines in which angle the organisms can detect food in.
-3. ``sightReach``: A value in range ``[50.0; 100.0]`` which determines at which maximum distance the organisms can detect food.
+3. ``sightAngle``: A value in range ``[75.0; 160.0]`` which determines in which angle the organisms can detect food in (angle distance of the two sensors).
+3. ``sightReach``: A value in range ``[50.0; 100.0]`` which determines at which maximum distance the organisms can detect food (range of the two sensors).
 
 
 ## Senses:
 An organism has only one sense: Sight.
-If food enters the ``sightAngle`` and ``sightReach`` an organism can detect it by processing the distance from the end of both angle ends. 
+If food enters the ``sightAngle`` and ``sightReach`` an organism can detect it by processing the distance from the end of both angles (sensors). 
 
-TODO insert image here
+![organism](/images/organism.png)
 
 ## Brain:
 The brain of an organism has the following fixed topology:
-- input-nodes: ``3`` (distance from lower angle end, distance from higher angle end, reccurent value t-1)
+- input-nodes: ``3`` (distance from left sensor, distance from right sensor, reccurent memory value t-1)
 - hidden-nodes: ``3``, tanh activation
 - output-nodes: ``2``, sigmoid activation (turn angle, reccurent value t)
 
-TODO insert image here
+![brain](/images/brain.png)
+
+
+## Simulation:
+
+![simulation](/images/simulation.png)

@@ -1,8 +1,8 @@
 {
     "windowWidth": 1300,
     "windowHeight": 1000,
-    "initialGenerationSize": 150,
-    "initialFoodAmount": 150,
+    "initialGenerationSize": 200,
+    "initialFoodAmount": 200,
 
     "universalMaxAdultSize": 23,
     "universalMinAdultSize": 12,
