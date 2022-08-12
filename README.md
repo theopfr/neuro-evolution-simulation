@@ -4,29 +4,41 @@
 #### 1. Installation:
 ###### (not tested on Windows or MacOS)
 
-1. clone this repository and navigate into it:
-``git clone --recursive https://github.com/theopfr/neuro-evolution.git``
-``cd neuro-evolution/``
-2. navigate to the "lib/" folder and clone the "Piksel" libary into it:
-``cd lib``
-``git clone --recursive https://github.com/bernhardfritz/piksel.git``
-3. make sure you have [CMake](https://cmake.org/install/) installed
+1. Clone this repository and navigate into it:
+    ```
+    git clone --recursive https://github.com/theopfr/neuro-evolution.git
+    cd neuro-evolution/
+    ```
+
+2. Navigate to the "lib/" folder and clone the "Piksel" libary into it:
+    ```
+    cd lib
+    git clone --recursive https://github.com/bernhardfritz/piksel.git
+    ```
+3. Install [CMake](https://cmake.org/install/) if you don't have it yet
 
 #### 2. Create Makefile:
-navigate to the "build_native/" folder and execute ``cmake ..``
+Navigate to the "build_native/" folder and execute:
+```
+cmake ..
+```
 
 ## | Run simulation:
 #### Compiling:
 Navigate to the "build_native/" folder.
 To compile the program after doing code changes execute:
-``make``
+```
+make
+```
 
 #### Executing:
 Navigate to the "build_native/" folder.
 To run the program execute:
-``./index``
+```
+./index
+```
 
-You can change the simulation configurations inside "./src/config.json" without having the recompile the program.
+You can change the simulation configurations inside [./src/config.json"](./src/config.json) without having the recompile the program.
 To see which configurations there are check out the table at the end of the README (TODO).
 
 
