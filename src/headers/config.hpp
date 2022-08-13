@@ -15,8 +15,6 @@ extern int config_initialFoodAmount;
 // gene configs
 extern int config_universalMaxAdultSize;
 extern int config_universalMinAdultSize;
-extern int config_universalMaxSightAngle;
-extern int config_universalMinSightAngle;
 extern int config_universalMaxSightReach;
 extern int config_universalMinSightReach;
 extern int config_geneMutationProbability;
@@ -37,6 +35,6 @@ extern float config_currentSize;
 extern float config_energyLoss;
 extern float config_wallDamage;
 extern float config_maxEnergyGainByFood;
-extern float config_horninessRegeneration;
+extern float config_breedabilityRegeneration;
 
 #endif

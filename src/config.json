@@ -1,20 +1,18 @@
 {
     "windowWidth": 1300,
     "windowHeight": 1000,
-    "initialGenerationSize": 200,
+    "initialGenerationSize": 400,
     "initialFoodAmount": 200,
 
     "universalMaxAdultSize": 23,
     "universalMinAdultSize": 12,
-    "universalMaxSightAngle": 160,
-    "universalMinSightAngle": 75,
     "universalMaxSightReach": 100,
-    "universalMinSightReach": 50,
+    "universalMinSightReach": 10,
     "geneMutationProbability": 20,
     "geneMutationFactor": 0.05,
 
     "inputSize": 3,
-    "hiddenSize": 3,
+    "hiddenSize": 6,
     "outputSize": 2,
     "brainMutationProbability": 7,
     "brainMutationFactor": 0.01,
@@ -26,5 +24,5 @@
     "energyLoss": 0.004,
     "wallDamage": 0.5,
     "maxEnergyGainByFood": 0.5,
-    "horninessRegeneration": 0.005
+    "breedabilityRegeneration": 0.005
 }

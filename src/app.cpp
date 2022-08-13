@@ -59,17 +59,21 @@ void App::draw(piksel::Graphics& g) {
     g.background(glm::vec4(0xf, 0xf, 0xf, 1.0f));
     
     iteration += 1;
-    //if (organisms.size() - 1 == 0) {
-    //    std::cout << " average lifetime: " << totalLifeTimes / totalLifes << std::endl;
-    //}    
+
+    // display over foods
+    for (uint i=0; i<foods.size() - 1; i++) {
+        foods.at(i).draw(g);
+    }
+
+    // spawn new food
+    if (iteration % 1 == 0) {
+        spawnFood(randomFloat(0, 3));
+    }
 
     // iterate over organisms
     for (uint i=0; i<organisms.size() - 1; i++) {
         // remove organism if dead and leave meat
         if (!organisms.at(i).alive) {
-            //totalLifes += 1;
-            //totalLifeTimes += organisms.at(i).currentLifeTime;
-
             Food foodFromOrganism = Food(organisms.at(i).position.x, organisms.at(i).position.y);
             foodFromOrganism.foodType = Meat;
             foods.push_back(foodFromOrganism);
@@ -79,23 +83,13 @@ void App::draw(piksel::Graphics& g) {
         else {
             organisms.at(i).draw(g);
             organisms.at(i).observe(g, organisms, foods);
-            organisms.at(i).move();
             organisms.at(i).update();
 
             sizes.push_back(organisms.at(i).genes.getMaxSize());
             diets.push_back(organisms.at(i).genes.getDiet());
-            sightAngles.push_back(organisms.at(i).genes.getSightAngle());
             sightReaches.push_back(organisms.at(i).genes.getSightReach());
         }
     }
-
-    // iterate over foods
-    for (uint i=0; i<foods.size() - 1; i++) {
-        foods.at(i).draw(g);
-    }
-
-    spawnFood(randomFloat(0, 3));
-
 
     // log simulation data
     int amount = organisms.size();
@@ -106,19 +100,15 @@ void App::draw(piksel::Graphics& g) {
         outJson[std::to_string(iteration)]["organismAmount"] = amount;
         outJson[std::to_string(iteration)]["sizes"] = sizes;
         outJson[std::to_string(iteration)]["diets"] = diets;
-        outJson[std::to_string(iteration)]["sightAngles"] = sightAngles;
         outJson[std::to_string(iteration)]["sightReaches"] = sightReaches;
 
         output_file << std::setfill(' ') << std::setw(2) << outJson;
-
-        output_file.close();
+        output_file.close();   
     }
 
     sizes.clear();
     diets.clear();
-    sightAngles.clear();
     sightReaches.clear();
-
 
     handleAnimationDelay(g);
 }

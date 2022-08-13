@@ -41,7 +41,6 @@ float* Brain::tanh(float* x, uint length) {
     for (uint i=0; i<length; i++) {
         x[i] = (std::exp(x[i]) - std::exp(-x[i])) / (std::exp(x[i]) + std::exp(-x[i]));
     }
-
     return x;
 }
 
@@ -63,7 +62,7 @@ float* Brain::dot(float** w, float* x, uint matRows, uint matCols) {
 
 float* Brain::forward(std::vector<float> observation) {
     float* input = &observation[0];
-    float* hiddenLayer = tanh(dot(weightMatrix1, input, hiddenSize, inputSize), hiddenSize);
+    float* hiddenLayer = sigmoid(dot(weightMatrix1, input, hiddenSize, inputSize), hiddenSize);
     float* output = sigmoid(dot(weightMatrix2, hiddenLayer, outputSize, hiddenSize), outputSize);
 
     return output;

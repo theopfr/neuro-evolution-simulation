@@ -36,11 +36,9 @@ public:
     uint initialGenerationSize;
     uint initialFoodAmount;
 
-
     char simulationDataPath[32] = "../data/simulation_data.json";
     std::vector<float> sizes;
     std::vector<float> diets;
-    std::vector<float> sightAngles;
     std::vector<float> sightReaches;
 
     App(
@@ -54,7 +52,8 @@ public:
 
         this->initialGenerationSize = initialGenerationSize;
         this->initialFoodAmount = initialFoodAmount;
-
+        
+        // create file stream to log simulation data
         std::ofstream fw (simulationDataPath, std::ofstream::out);
         fw << "";
         fw.close();

@@ -18,14 +18,13 @@ last_simulation_iteration = 0
 
 total_plot_indices = []
 total_organism_amounts = []
-total_wall_collisions = []
+
 
 fig = plt.figure()
 ax0 = fig.add_subplot(3, 2, 1)
 ax1 = fig.add_subplot(3, 2, 2)
 ax2 = fig.add_subplot(3, 2, 3)
 ax3 = fig.add_subplot(3, 2, 4)
-ax4 = fig.add_subplot(3, 2, 5)
 
 
 def plotter(idx: int) -> None:
@@ -83,11 +82,6 @@ def plotter(idx: int) -> None:
 
             ax3.set_xlim([config["universalMinSightReach"], config["universalMaxSightReach"]])
             ax3.set_title(f"organism sight reaches, average: {round(np.mean(sight_reaches), 3)}")
-
-            """wall_collisions = data[simulation_iteration]["wallCollisions"]
-            total_wall_collisions.append(wall_collisions)
-            ax4.plot(total_plot_indices, total_wall_collisions, color="mediumaquamarine")
-            ax4.set_title("wall collisions")"""
 
         except Exception as e:
             print(e)
