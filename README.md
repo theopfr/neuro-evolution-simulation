@@ -63,12 +63,26 @@ All gene ranges can be configured and experimented with. Check them out in the t
 An organism has only one sense: Sight.
 If food enters the ``sightAngle`` and ``sightReach`` an organism can detect it by processing the distance from the end of both angles (sensors). 
 
+Diagram:
 <img src="/images/organism.png" height="400"/>
 
 ## | Brain:
-The brain of an organism has the following fixed topology:
+The neural network of an organism has the following fixed topology:
 - input-nodes: ``3`` (distance from left sensor, distance from right sensor, reccurent memory value t-1)
 - hidden-nodes: ``3``, tanh activation
 - output-nodes: ``2``, sigmoid activation (turn angle, reccurent value t)
 
+Diagram:
 <img src="/images/brain.png" height="400"/>
+
+## | Simulation Data Visualization:
+When you start the simulation, you can simutainuously run a Python script to plot relevant data.
+Make sure that you have the following Python packages installed: ``matplotlib``, ``numpy``
+
+To run the simulation, go to the root directory of this project and execute:
+```
+python visualize.py
+```
+
+Example plots:
+<img src="/images/visualizations.png" height="400"/>

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import json
-import time
+import numpy as np
 import os
 
 plt.style.use("ggplot")
@@ -18,13 +18,14 @@ last_simulation_iteration = 0
 
 total_plot_indices = []
 total_organism_amounts = []
+total_wall_collisions = []
 
 fig = plt.figure()
-ax1 = fig.add_subplot(3, 2, 1)
-ax2 = fig.add_subplot(3, 2, 2)
-ax3 = fig.add_subplot(3, 2, 3)
-ax4 = fig.add_subplot(3, 2, 4)
-ax0 = fig.add_subplot(3, 2, 5)
+ax0 = fig.add_subplot(3, 2, 1)
+ax1 = fig.add_subplot(3, 2, 2)
+ax2 = fig.add_subplot(3, 2, 3)
+ax3 = fig.add_subplot(3, 2, 4)
+ax4 = fig.add_subplot(3, 2, 5)
 
 
 def plotter(idx: int) -> None:
@@ -50,33 +51,43 @@ def plotter(idx: int) -> None:
             total_plot_indices.append(idx)
             total_organism_amounts.append(organism_amount)
 
-            ax0.plot(total_plot_indices, total_organism_amounts, color="red")
+            ax0.plot(total_plot_indices, total_organism_amounts, color="mediumaquamarine")
             ax0.set_title("organism amount")
 
-            # plot histogram of the organism sizes
+            # plot histogram of organism sizes
             sizes = data[simulation_iteration]["sizes"]
             ax1.clear()
-            ax1.hist(sizes, bins=6, color="blue", alpha=0.45)
-            ax1.set_xlim([config["universalMinAdultSize"], config["universalMaxAdultSize"]])
-            ax1.set_title("organism sizes")
 
+            ax1.hist(sizes, bins=6, color="blue", alpha=0.45)
+            ax1.axvline(np.mean(sizes), color="mediumaquamarine", linestyle="dashed", linewidth=1.25)
+
+            ax1.set_xlim([config["universalMinAdultSize"], config["universalMaxAdultSize"]])
+            ax1.set_title(f"organism sizes, average: {round(np.mean(sizes), 3)}")
+
+            # plot histogram of organism diets
             diet = data[simulation_iteration]["diets"]
             ax2.clear()
+
             ax2.hist(diet, bins=5, color="blue", alpha=0.45)
+            ax2.axvline(np.mean(diet), color="mediumaquamarine", linestyle="dashed", linewidth=1.25)
+
             ax2.set_xlim([0, 1])
-            ax2.set_title("organism diets")
+            ax2.set_title(f"organism diets, average: {round(np.mean(diet), 3)}")
 
-            sight_angles = data[simulation_iteration]["sightAngles"]
-            ax3.clear()
-            ax3.hist(sight_angles, bins=6, color="blue", alpha=0.45)
-            ax3.set_xlim([config["universalMinSightAngle"], config["universalMaxSightAngle"]])
-            ax3.set_title("organism sight angles")
-
+            # plot histogram of organism sight reaches
             sight_reaches = data[simulation_iteration]["sightReaches"]
-            ax4.clear()
-            ax4.hist(sight_reaches, bins=6, color="blue", alpha=0.45)
-            ax4.set_xlim([config["universalMinSightReach"], config["universalMaxSightReach"]])
-            ax4.set_title("organism sight reaches")
+            ax3.clear()
+
+            ax3.hist(sight_reaches, bins=6, color="blue", alpha=0.45)
+            ax3.axvline(np.mean(sight_reaches), color="mediumaquamarine", linestyle="dashed", linewidth=1.25)
+
+            ax3.set_xlim([config["universalMinSightReach"], config["universalMaxSightReach"]])
+            ax3.set_title(f"organism sight reaches, average: {round(np.mean(sight_reaches), 3)}")
+
+            """wall_collisions = data[simulation_iteration]["wallCollisions"]
+            total_wall_collisions.append(wall_collisions)
+            ax4.plot(total_plot_indices, total_wall_collisions, color="mediumaquamarine")
+            ax4.set_title("wall collisions")"""
 
         except Exception as e:
             print(e)
