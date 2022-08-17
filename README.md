@@ -1,5 +1,8 @@
 # Evolution simulator using a real-time neuro-genetic algorithm
 
+<img src="/images/simulation-recording.gif" height="350"/>
+
+
 ## | Setup:
 #### 1. Installation:
 ###### (not tested on Windows or MacOS)
@@ -68,7 +71,7 @@ Diagram:
 <img src="/images/organism.png" height="400"/>
 
 ## | Brain:
-###### (thearchitecture might change if new inputs and/or outputs are added, but I'm too lazy to update the illustration each time)
+###### (the architecture might change if new inputs and/or outputs are added, but I'm too lazy to update the illustration each time)
 The neural network of an organism has the following fixed topology:
 - input-nodes: ``3`` (distance from left sensor, distance from right sensor, reccurent memory value t-1)
 - hidden-nodes: ``hiddenSize`` (default: ``6``), tanh activation
