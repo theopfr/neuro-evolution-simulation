@@ -79,6 +79,7 @@ The neural network of an organism has the following fixed topology:
 - output-nodes: ``2``, sigmoid activation (turn angle, reccurent value t)
 
 Diagram:
+<br/>
 <img src="/images/brain.png" height="400"/>
 
 ## 📊 Simulation data visualization:
@@ -91,4 +92,5 @@ python visualize.py
 ```
 
 Example plots:
+<br/>
 <img src="/images/visualizations.png" height="400"/>
