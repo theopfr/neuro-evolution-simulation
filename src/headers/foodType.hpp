@@ -4,7 +4,8 @@
 
 enum FoodType {
     Plant,
-    Meat
+    Meat,
+    Rotten
 };
 
 #endif

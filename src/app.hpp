@@ -25,7 +25,7 @@
 class App : public piksel::BaseApp {
 public:
     uint maxAnimationDelay = 50000;
-    uint animationDelay = maxAnimationDelay;
+    uint animationDelay = 0;
     uint animationDelta = 2000;
     uint iteration = 0;
 
@@ -38,8 +38,11 @@ public:
 
     char simulationDataPath[32] = "../data/simulation_data.json";
     std::vector<float> sizes;
+    std::vector<float> speeds;
     std::vector<float> diets;
     std::vector<float> sightReaches;
+    std::vector<int> generations;
+    std::vector<float> energies;
 
     App(
         uint width, 
@@ -62,7 +65,7 @@ public:
     void setup();
     void draw(piksel::Graphics& g);
     void keyPressed(int key);
-    void spawnFood(uint amount);
+    void spawnFood(uint amount, bool plantOnly);
 
     std::vector<Organism> organisms;
     std::vector<Food> foods;
@@ -82,6 +85,6 @@ public:
     }
 
 };
-#endif /* APP_HPP */
+#endif
 
 

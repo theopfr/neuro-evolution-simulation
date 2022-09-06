@@ -1,6 +1,7 @@
 #include <iostream>
 #include <piksel/baseapp.hpp>
 #include <cmath>
+#include <assert.h>
 
 #include "headers/utils.hpp"
 #include "headers/vector.hpp"
@@ -10,20 +11,23 @@
 #include "headers/config.hpp"
 
 
-
 struct Genes {
     // universal bounderies for gene values
-    uint universalMaxAdultSize = config_universalMaxAdultSize;
-    uint universalMinAdultSize = config_universalMinAdultSize;
+    int universalMaxAdultSize = config_universalMaxAdultSize;
+    int universalMinAdultSize = config_universalMinAdultSize;
 
-    uint universalMaxSightReach = config_universalMaxSightReach;
-    uint universalMinSightReach = config_universalMinSightReach;
+    int universalMaxSpeed = config_universalMaxSpeed;
+    int universalMinSpeed = config_universalMinSpeed;
 
-    uint mutationProbability = config_geneMutationProbability;
+    int universalMaxSightReach = config_universalMaxSightReach;
+    int universalMinSightReach = config_universalMinSightReach;
+
+    int mutationProbability = config_geneMutationProbability;
     float mutationFactor = config_geneMutationFactor;
 
     float diet;
-    float maxSize;
+    float size;
+    float speed;
     float sightReach;
 
     Genes() {
@@ -35,17 +39,22 @@ struct Genes {
         return diet;
     }
 
-    float getMaxSize() {
-        return convertToRange(maxSize, 0.0, 1.0, (float) universalMinAdultSize, (float) universalMaxAdultSize);
+    float getSize() {
+        return (float) convertToRange(size, 0.0, 1.0, (float) universalMinAdultSize, (float) universalMaxAdultSize);
+    }
+
+    float getSpeed() {
+        return (float) convertToRange(speed, 0.0, 1.0, (float) universalMinSpeed, (float) universalMaxSpeed);
     }
 
     float getSightReach() {
-        return convertToRange(sightReach, 0.0, 1.0, (float) universalMinSightReach, (float) universalMaxSightReach);
+        return (float) convertToRange(sightReach, 0.0, 1.0, (float) universalMinSightReach, (float) universalMaxSightReach);
     }
 
     void mutate() {
         mutateGene(diet);
-        mutateGene(maxSize);
+        mutateGene(size);
+        mutateGene(speed);
         mutateGene(sightReach);
     }
  
@@ -63,7 +72,8 @@ struct Genes {
 
     void setRandomGenes() {
         diet = randomFloat(0.0, 1.0);
-        maxSize = randomFloat(0.0, 1.0);
+        size = randomFloat(0.0, 1.0);
+        speed = randomFloat(0.0, 1.0);
         sightReach = randomFloat(0.0, 1.0);
     }
 };
@@ -84,29 +94,31 @@ public:
 
     // current direction and speed
     float angle;
-    float wanderingStrength = config_wanderingStrength;
-
     float speed;
-    float minSpeed = config_minSpeed;
-    float maxSpeed = config_maxSpeed;
 
     // current sight angle and reach
     Vector sightEdge1;
     Vector sightEdge2;
 
     // size values
-    float currentSize = config_currentSize;
+    float currentSize = config_initialSize;
 
     bool alive = true;
     float energy = 1.0;
-    float initialEnergyLoss = config_energyLoss;
-    float energyLoss = initialEnergyLoss;
+    float energyLoss;
     float wallDamage = config_wallDamage;
-    uint currentLifeTime = 0;
+    int currentLifeTime = 0;
 
     float maxEnergyGainByFood = config_maxEnergyGainByFood;
     float energyGainByPlant;
     float energyGainByMeat;
+    float energyLossByRottenFood = config_energyLossByRottenFood;
+    float openMouth = 0.0;
+
+    int maxFoodStorage = 15;
+    int currentFoodStorage = 0;
+    int digestionIterations = 200;
+    int digestionIterationCounter = 0;
 
     bool breedable = false;
     float breedability = 0.0;
@@ -115,7 +127,7 @@ public:
     float recurrentState = randomFloat(0.0, 1.0);
     std::vector<float> observations;
 
-    float timeToAttack = 0.0;
+    uint generation = 0;
 
     Organism() {
         angle = randomInt(0, 360);
@@ -131,11 +143,18 @@ public:
             g.stroke(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
         }
 
+        /*if (currentFoodStorage == maxFoodStorage) {
+            g.fill(glm::vec4(0.0f, 0.0f, 1.0f, 0.35f));
+        }
+        else {
+            g.fill(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        }*/
+
         g.fill(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         g.ellipse(position.x, position.y, currentSize, currentSize);
 
-        if (timeToAttack > 0.0) {
-            g.line(position.x, position.y, position.x + direction.x * (currentSize * 0.75), position.y + direction.y * (currentSize * 0.75));
+        if (openMouth >= config_openMouthThreshold) {
+            g.line(position.x, position.y, position.x + direction.x * (currentSize * 0.7), position.y + direction.y * (currentSize * 0.7));
         }
         else {
             g.line(position.x, position.y, position.x + direction.x * (currentSize * 0.5), position.y + direction.y * (currentSize * 0.5));
@@ -150,11 +169,14 @@ public:
         g.line(position.x, position.y, position.x + sightEdge1.x * (currentSize * reachLineFactor), position.y + sightEdge1.y * (currentSize * reachLineFactor));
         g.line(position.x, position.y, position.x + sightEdge2.x * (currentSize * reachLineFactor), position.y + sightEdge2.y * (currentSize * reachLineFactor));
 
+        if (genes.diet > 0.5) {
+            g.fill(glm::vec4(1.0f, 0.0f, 0.0f, 0.5));
+        }
         g.ellipse(position.x + sightEdge1.x * (currentSize * reachLineFactor), position.y + sightEdge1.y * (currentSize * reachLineFactor), 3, 3);
         g.ellipse(position.x + sightEdge2.x * (currentSize * reachLineFactor), position.y + sightEdge2.y * (currentSize * reachLineFactor), 3, 3);
     }
     
-    void setPosition(uint startX, uint startY) {
+    void setPosition(int startX, int startY) {
         position.x = startX;
         position.y = startY;
     }
@@ -164,28 +186,26 @@ public:
     }
 
     void inheritGenes(Organism parent1, Organism parent2) {
-        if (parent1.energy > parent2.energy) {
-            genes.diet = parent1.genes.diet;
-            genes.maxSize = parent1.genes.maxSize;
-            genes.sightReach = parent1.genes.sightReach;
+        // crossover diet
+        if (randomInt(1, 2) == 1) { genes.diet = parent1.genes.diet; } 
+        else { genes.diet = parent2.genes.diet; }
+        // crossover size
+        if (randomInt(1, 2) == 1) { genes.size = parent1.genes.size; } 
+        else { genes.size = parent2.genes.size; }
+        // crossover speed
+        if (randomInt(1, 2) == 1) { genes.speed = parent1.genes.speed; } 
+        else { genes.speed = parent2.genes.speed; }
+        // crossover sight reach
+        if (randomInt(1, 2) == 1) { genes.sightReach = parent1.genes.sightReach; } 
+        else { genes.sightReach = parent2.genes.sightReach; }
 
-            brain = parent1.brain;
-        }
-        else {
-            genes.diet = parent2.genes.diet;
-            genes.maxSize = parent2.genes.maxSize;
-            genes.sightReach = parent2.genes.sightReach;
+        // inherit brain
+        if (parent1.energy > parent2.energy) { brain = parent1.brain; } 
+        else { brain = parent2.brain; }
 
-            brain = parent2.brain;
-        }
-        
+        // mutate genes and brain
         genes.mutate();
         brain.mutate();
-    }
-
-    void determineStats() {
-        determineDiet();
-        determineSpeed();
     }
 
     void determineDiet() {
@@ -204,17 +224,29 @@ public:
         }
     }
 
-    void determineSpeed() {
-        float additionalSpeedFactor = 1.0 - genes.maxSize;
-        speed = minSpeed + (maxSpeed - minSpeed) * additionalSpeedFactor;
-    }
-
     void eat(FoodType foodType) {
         if (foodType == Plant) {
-            energy += energyGainByPlant;
+            if (currentFoodStorage == maxFoodStorage) {
+                energy -= config_overFedEnergyLoss;
+            }
+            else {
+                energy += energyGainByPlant;
+                currentFoodStorage += 1;
+            }
+            // energy += energyGainByPlant;
         }
         else if (foodType == Meat) {
-            energy += energyGainByMeat;
+            if (currentFoodStorage == maxFoodStorage) {
+                energy -= config_overFedEnergyLoss;
+            }
+            else {
+                energy += energyGainByMeat;
+                currentFoodStorage += 1;
+            }
+            //energy += energyGainByMeat;
+        }
+        else if (foodType == Rotten) {
+            energy -= energyLossByRottenFood;
         }
     }
 
@@ -225,15 +257,13 @@ public:
         sightEdge2.x = position.x + sightEdge2.x * genes.getSightReach();
         sightEdge2.y = position.y + sightEdge2.y * genes.getSightReach();
 
-        // float sensorAngle = std::acos((sightEdge2.x * sightEdge1.x + sightEdge2.y * sightEdge1.y) / (sightEdge1.length() * sightEdge2.length()));
-
         // check for collision with other organism or distance to other organism
         bool organismFound = false;
-        uint closestOrganismIndex = 0;
+        int closestOrganismIndex = 0;
         float shortestDistanceToOrganism = genes.getSightReach() + currentSize / 2;
 
-        for (uint i=0; i<organisms.size() - 1; i++) {
-            if (&organisms.at(i) == this) {
+        for (int i=0; i<organisms.size() - 1; i++) {
+            if (&organisms.at(i) == this || organisms.at(i).alive == false) {
                 continue;
             }
 
@@ -246,32 +276,87 @@ public:
             
             // check for collision with other organism
             if (distanceToOrganism < (currentSize / 2 + organisms.at(i).currentSize / 2)) {
-                if (breedable && organisms.at(i).breedable) {
+                
+                // float attackWinProbability = convertToRange((genes.size - organisms.at(i).genes.size), -1.0, 1.0, 0.0, 1.0);
+                // float energyGainByAttack = maxEnergyGainByFood * (2.0 - organisms.at(i).genes.diet) * (1 + organisms.at(i).genes.size);
 
+                /*if (2 == 1 && attack > 0.95) {
+                    float attackWinProbability = convertToRange((genes.size - organisms.at(i).genes.size), -1.0, 1.0, 0.0, 1.0);
+                    float energyGainByAttack = maxEnergyGainByFood * (2.0 - organisms.at(i).genes.diet) * (1 + organisms.at(i).genes.size);
+
+                    if (randomFloat(0.0, 1.0) < attackWinProbability) {
+                        energy += energyGainByAttack;
+                        organisms.at(i).alive = false;
+                    }
+                    else {
+                        energy -= 0.3;
+                    }
+
+                }
+
+                else if (2 == 1 && genes.diet > 0.5 && genes.size > organisms.at(i).genes.size && energy < 0.05) {
+                    organisms.at(i).alive = false;
+                    energy += energyGainByMeat * 2.0;//energyGainByMeat * (1.0 - organisms.at(i).genes.diet);
+                }*/
+
+                /*if (genes.getDiet() > 0.5 && organisms.at(i).genes.getDiet() < 0.5) {
+                    float attackWinProbability = convertToRange((genes.size - organisms.at(i).genes.size), -1.0, 1.0, 0.0, 1.0);
+                    if (randomFloat(0.0, 1.0) < attackWinProbability) {
+                        energyGainByMeat = genes.getDiet() * maxEnergyGainByFood;
+                        energy += energyGainByMeat;
+                        //organisms.at(i).energy -= energyGainByMeat;
+                    }
+                    else {
+                        energy -= 0.2;
+                    }
+                }*/
+
+                if (breedable && organisms.at(i).breedable) {
+                    /*int children = 1;
+                    int twinChance = 5;
+                    if (randomInt(0, 100) < twinChance) {
+                        children = 2;
+                    }
+
+                    for (int c=0; c<children; c++) {
+                        Organism organism = Organism();
+                        organism.setPosition(position.x, position.y);
+                        organism.inheritGenes(*this, organisms.at(i));
+                        organism.determineDiet();
+                        organism.generation = generation + 1;
+                        organisms.push_back(organism);
+
+                        breedability = 0.0;
+                        organisms.at(i).breedability = 0.0;
+                    }*/
                     Organism organism = Organism();
                     organism.setPosition(position.x, position.y);
                     organism.inheritGenes(*this, organisms.at(i));
-                    organism.determineStats();
-
+                    organism.determineDiet();
+                    organism.generation = generation + 1;
                     organisms.push_back(organism);
 
                     breedability = 0.0;
                     organisms.at(i).breedability = 0.0;
                 }
+                
             }
         }
 
         // check for collision with food or distance to food
         bool foodFound = false;
-        uint closestFoodIndex = 0;
+        int closestFoodIndex = 0;
         float shortestDistanceToFood = genes.getSightReach();
 
-        for (uint i=0; i<foods.size() - 1; i++) {
+        for (int i=0; i<foods.size() - 1; i++) {
             float distanceToFood = position.distance(foods.at(i).position);
 
-            if (distanceToFood < (currentSize / 2 + foods.at(i).size / 2)) {
+            if (distanceToFood < (currentSize / 2 + foods.at(i).size / 2) && openMouth >= config_openMouthThreshold) {
                 eat(foods.at(i).foodType);
                 foods.erase(foods.begin() + i);
+            }
+            else if (distanceToFood < (currentSize / 2 + foods.at(i).size / 2) && openMouth < config_openMouthThreshold) {
+                std::cout << this << " closed" << std::endl;
             }
 
             if (distanceToFood <= shortestDistanceToFood) {
@@ -281,82 +366,124 @@ public:
             }
         }
 
-        float organismDistance1 = 0.0;
-        float organismDistance2 = 0.0;
+        float organismDistance1 = randomFloat(0.0, 1.0);
+        float organismDistance2 = randomFloat(0.0, 1.0);
+        float organismType = randomFloat(0.0, 1.0);
         if (organismFound) {
             organismDistance1 = sightEdge1.distance(organisms.at(closestOrganismIndex).position) / genes.getSightReach();
             organismDistance2 = sightEdge2.distance(organisms.at(closestOrganismIndex).position) / genes.getSightReach();
+
+            if (organisms.at(closestOrganismIndex).genes.diet < 0.5) {
+                organismType = 0.0;
+            }
+            else {
+                organismType = 1.0;
+            }
         }
 
         float foodDistance1 = randomFloat(0.0, 1.0);
         float foodDistance2 = randomFloat(0.0, 1.0);
+        float foodType = randomFloat(0.0, 1.0);
         if (foodFound) {
             foodDistance1 = sightEdge1.distance(foods.at(closestFoodIndex).position) / genes.getSightReach();
             foodDistance2 = sightEdge2.distance(foods.at(closestFoodIndex).position) / genes.getSightReach();
+
+            // food type encodings: Plant -> 0.0, Meat -> 0.5, Rotten -> 1.0;
+            if (foods.at(closestFoodIndex).foodType == Plant) {
+                foodType = 0.0;
+            }
+            else if (foods.at(closestFoodIndex).foodType == Meat) {
+                foodType = 0.5;
+            }
+            else if (foods.at(closestFoodIndex).foodType == Rotten) {
+                foodType = 1.0;
+            }
         }
 
-        float wallDistanceX = randomFloat(0.0, 1.0);
-        float wallDistanceY = randomFloat(0.0, 1.0);
-        if (position.x - (currentSize / 2) <= 0 || position.y - (currentSize / 2) <= 0) {
-            wallDistanceX = position.x / config_windowWidth;
-            wallDistanceY = position.y / config_windowHeight;
-        }
+        // float wallDistanceX = randomFloat(0.0, 1.0);
+        // float wallDistanceY = randomFloat(0.0, 1.0);
 
-        observations = { foodDistance1, foodDistance2, wallDistanceX, wallDistanceY, recurrentState };
+        /*float objectDistance1, objectDistance2, objectType;
+        if ((foodDistance1 + foodDistance2) < (organismDistance1 + organismDistance2)) {
+            objectDistance1 = foodDistance1;
+            objectDistance2 = foodDistance2;
+            if (foods.at(closestFoodIndex).foodType == Plant) {
+                objectType = 0.0;
+            }
+            else if (foods.at(closestFoodIndex).foodType == Meat) {
+                objectType = 0.25;
+            }
+            else if (foods.at(closestFoodIndex).foodType == Rotten) {
+                objectType = 0.5;
+            }
+        }
+        else {
+            objectDistance1 = organismDistance1;
+            objectDistance2 = organismDistance1;
+            if (organismType == 0.0) {
+                objectType = 0.75;
+            }
+            else if (organismType == 1.0) {
+                objectType = 1.0;
+            }
+        }*/
+
+        //observations = { objectDistance1, objectDistance2, objectType, (float) currentFoodStorage / (float) maxFoodStorage };
+        observations = { foodDistance1, foodDistance2, foodType, (float) currentFoodStorage / (float) maxFoodStorage };
+        // , organismDistance1, organismDistance2, organisms.at(closestOrganismIndex).genes.getSize()
+
+        // observations = { foodDistance1, foodDistance2, foodType, organismDistance1, organismDistance2, organisms.at(closestOrganismIndex).genes.size }; //  , wallDistanceX, wallDistanceY, organismDistance1, organismDistance2, organismType
+        // observations = { foodDistance1, foodDistance2, foodType, organismDistance1, organismDistance2 };
+
     }
 
     void update() {
-        /* environmental causes */
+        // consume energy
+        energyLoss = config_initialEnergyLoss + 
+                     convertToRange(genes.size, 0.0, 1.0, 0.0, config_maxEnergyLossBySize) + 
+                     convertToRange(genes.speed, 0.0, 1.0, 0.0, config_maxEnergyLossBySpeed) + 
+                     (config_energyLossIncrementionRate * currentLifeTime);
 
-        // consume energy, age organism by 1
         energy -= energyLoss;
-        currentLifeTime += 1;
 
+        if (currentFoodStorage == maxFoodStorage) {
+            digestionIterationCounter += 1;
+        }
+        
+        if (digestionIterationCounter == digestionIterations) {
+            currentFoodStorage = 0;
+            digestionIterationCounter = 0;
+        }
+        
         // kill organism if its energy reaches 0
-        if (energy <= 0) {
+        if (energy <= 0 || currentLifeTime > 10000) {
             alive = false;
         }
 
         // grow organism if it didn't reach full size yet
-        if (currentSize < genes.getMaxSize()) {
-            currentSize += (float) ((float) genes.getMaxSize() / 200.0);
+        if (currentSize < genes.getSize()) {
+            currentSize += (float) ((float) genes.getSize() / 200.0);
+            energy += energyLoss;
         }
 
         // check if organism is breedable, if not raise the breedability
-        if (breedability < 1.0 || energy < 1.5) {
-            breedability += breedabilityRegeneration;
+        if (breedability < 1.0 || energy < config_minEnergyToBreed) {
+            if (currentSize >= genes.getSize()) {
+                breedability += breedabilityRegeneration;
+            }
             breedable = false;
         }
-        else {
+        else if (breedability >= 1.0 && currentSize >= genes.getSize()) {
             breedable = true;
         }
 
-        energyLoss = 1.0 / 400000.0 * currentLifeTime + initialEnergyLoss;
-        std::cout << energyLoss << std::endl;
-
         /* actions */
-
         float* output = brain.forward(observations);
+        angle = output[0];
+        openMouth = output[1];
 
-        float angle = output[0];
-
-        /*float attackDecision = output[2];
-
-        if (attackDecision > 0.5 && energy > 0.2 + 0.1) {
-            energy -= 0.005;
-            timeToAttack = 1.0;
-        }
-        if (timeToAttack > 0.0) {
-            timeToAttack -= 0.5;
-        }
-        if (timeToAttack < 0.0) {
-            timeToAttack = 0.0;
-        }*/
-
-        recurrentState = output[1];
-
-        float sightAngleRange = 80.0;
-        angle = convertToRange(angle, 0.0, 1.0, -sightAngleRange / 2.0, sightAngleRange / 2.0);
+        float turnAngleRange = (float) config_maxTurnAngle;
+        angle = convertToRange(angle, 0.0, 1.0, -turnAngleRange / 2.0, turnAngleRange / 2.0);
 
         // calculate turn angle
         angle = angle * (std::atan(1) * 4 / 180);
@@ -365,10 +492,10 @@ public:
         direction.normalize();
 
         // update position
-        position.x += direction.x * speed;
-        position.y += direction.y * speed;
+        position.x += direction.x * genes.getSpeed();
+        position.y += direction.y * genes.getSpeed();
 
-        float sightAngleLambda = sightAngleRange / 2.0 * (std::atan(1) * 4 / 180);
+        float sightAngleLambda = turnAngleRange / 2.0 * (std::atan(1) * 4 / 180);
         sightEdge1.x = (direction.x * cos(sightAngleLambda)) - (direction.y * sin(sightAngleLambda));
         sightEdge1.y = (direction.x * sin(sightAngleLambda)) + (direction.y * cos(sightAngleLambda));
 
@@ -384,5 +511,7 @@ public:
             direction.y *= -1.0;
             energy -= wallDamage;
         }
+
+        currentLifeTime += 1;
     }
 };

@@ -19,10 +19,12 @@ public:
 
     Brain();
     void randomInitializeBrain();
+
     float** initializeMatrix(uint rows, uint cols);
     float* dot(float** w, float* x, uint matRows, uint matCols);
     float* sigmoid(float* x, uint length);
     float* tanh(float* x, uint length);
+    float* relu(float* x, uint length);
     float* forward(std::vector<float> observation);
     void mutate();
 };

@@ -1,6 +1,7 @@
 
 #include "headers/brain.hpp"
 #include "headers/config.hpp"
+#include <memory>
 
 
 Brain::Brain() {
@@ -14,6 +15,9 @@ Brain::Brain() {
 void Brain::randomInitializeBrain() {
     weightMatrix1 = initializeMatrix(hiddenSize, inputSize);
     weightMatrix2 = initializeMatrix(outputSize, hiddenSize);
+
+    // no hidden layer weight matrix
+    //weightMatrix1 = initializeMatrix(outputSize, inputSize);
 }
 
 float** Brain::initializeMatrix(uint rows, uint cols) {
@@ -44,9 +48,21 @@ float* Brain::tanh(float* x, uint length) {
     return x;
 }
 
+float* Brain::relu(float* x, uint length) {
+    for (uint i=0; i<length; i++) {
+        if (x[i] < 0.0) {
+            x[i] = 0.0;
+        }
+        else {
+            x[i] = x[i];
+        }
+    }
+    return x;
+}
+
 float* Brain::dot(float** w, float* x, uint matRows, uint matCols) {
     float* result = new float[matRows];
-    for (uint i=0; i<matCols; i++) {
+    for (uint i=0; i<matRows; i++) {
         result[i] = 0.0;
     }
 
@@ -56,7 +72,6 @@ float* Brain::dot(float** w, float* x, uint matRows, uint matCols) {
         }
     }
 
-
     return result;
 }
 
@@ -65,11 +80,14 @@ float* Brain::forward(std::vector<float> observation) {
     float* hiddenLayer = sigmoid(dot(weightMatrix1, input, hiddenSize, inputSize), hiddenSize);
     float* output = sigmoid(dot(weightMatrix2, hiddenLayer, outputSize, hiddenSize), outputSize);
 
+    // no hidden layer forward feed
+    //float* output = sigmoid(dot(weightMatrix1, input, outputSize, inputSize), outputSize);
+
     return output;
 }
 
 void Brain::mutate() {
-    for (uint i=0; i<hiddenSize; i++) {
+    /*for (uint i=0; i<hiddenSize; i++) {
         for (uint j=0; j<inputSize; j++) {
             if (randomInt(0, 100) <= config_brainMutationProbability) {
                 weightMatrix1[i][j] += randomFloat(-config_brainMutationFactor, config_brainMutationFactor);
@@ -83,5 +101,15 @@ void Brain::mutate() {
                 weightMatrix2[i][j] += randomFloat(-config_brainMutationFactor, config_brainMutationFactor);
             }
         }   
-    }
+    }*/
+
+    // no hidden layer mutation:
+    /*for (uint i=0; i<outputSize; i++) {
+        for (uint j=0; j<inputSize; j++) {
+            if (randomInt(0, 100) <= config_brainMutationProbability) {
+                weightMatrix1[i][j] += randomFloat(-config_brainMutationFactor, config_brainMutationFactor);
+            }
+        }   
+    }*/
+
 }
