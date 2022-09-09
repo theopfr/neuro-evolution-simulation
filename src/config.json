@@ -6,10 +6,10 @@
     
     "initialSize": 7.0,
     "wallDamage": 0.1,
-    "maxEnergyGainByFood": 1.25,
+    "maxEnergyGainByFood": 1.75,
     "breedabilityRegeneration": 0.0005,
     "minEnergyToBreed": 10.0,
-    "openMouthThreshold": 0.2,
+    "openMouthThreshold": 0.3,
     "maxTurnAngle": 80,
     
     "initialEnergyLoss": 0.001,

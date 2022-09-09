@@ -355,9 +355,6 @@ public:
                 eat(foods.at(i).foodType);
                 foods.erase(foods.begin() + i);
             }
-            else if (distanceToFood < (currentSize / 2 + foods.at(i).size / 2) && openMouth < config_openMouthThreshold) {
-                std::cout << this << " closed" << std::endl;
-            }
 
             if (distanceToFood <= shortestDistanceToFood) {
                 foodFound = true;
